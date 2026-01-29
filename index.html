@@ -472,6 +472,104 @@
         .list-card .word { font-weight: 600; margin-bottom: 4px; }
         .list-card .meaning { font-size: 0.85em; color: var(--success); }
 
+        /* Verbs Section */
+        .verbs-section { display: none; }
+        .verbs-section.active { display: block; }
+        .verbs-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .verb-tab {
+            padding: 10px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text-2);
+            font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .verb-tab:hover { border-color: var(--accent-1); color: var(--text-1); }
+        .verb-tab.active {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border-color: transparent;
+            color: #fff;
+        }
+        .aspect-pills {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .aspect-pill {
+            padding: 10px 18px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: var(--bg-card);
+            color: var(--text-2);
+            font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .aspect-pill:hover { border-color: var(--accent-1); color: var(--text-1); }
+        .aspect-pill.active {
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15));
+            border-color: var(--accent-1);
+            color: var(--text-1);
+        }
+        .verb-pair {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .verb-item {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .verb-item.active { border-color: var(--accent-1); background: rgba(99,102,241,0.1); }
+        .verb-item .aspect { font-size: 0.75em; color: var(--text-3); margin-bottom: 4px; }
+        .verb-item .verb { font-size: 1.2em; font-weight: 600; }
+        .conj-table {
+            width: 100%;
+            margin-top: 16px;
+        }
+        .conj-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr 1fr;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 600px) {
+            .conj-row { grid-template-columns: 1fr; text-align: center; }
+            .conj-row > div { padding: 8px 0; border-bottom: 1px solid var(--border); }
+            .conj-row > div:last-child { border-bottom: none; }
+        }
+        .conj-row .pronoun { color: var(--accent-1); font-weight: 600; display: flex; align-items: center; }
+        .conj-row .tense-cell {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+        .conj-row .tense-cell .lbl { font-size: 0.7em; color: var(--text-3); text-transform: uppercase; margin-bottom: 2px; }
+        .conj-row .tense-cell .form { font-weight: 500; }
+        .conj-row .tense-cell .form.na { color: var(--text-3); font-style: italic; }
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
@@ -496,6 +594,7 @@
     <button class="nav-btn" onclick="mode('quiz')">🎯 Тест</button>
     <button class="nav-btn" onclick="mode('sentences')">📝 Гаплар</button>
     <button class="nav-btn" onclick="mode('list')">📋 Рўйхат</button>
+    <button class="nav-btn" onclick="mode('verbs')">🔤 Феълар</button>
     <button class="nav-btn" onclick="markDone()">✅ Ўргандим</button>
     <button class="nav-btn" onclick="shuffle()">🔀 Аралаш</button>
 </div>
@@ -543,9 +642,66 @@
             <div class="sent-score">Гаплар машқи: <span class="val"><span id="sentScore">0</span>/<span id="sentTries">0</span></span></div>
         </div>
     </div>
+    <!-- Verbs Section -->
+    <div class="verbs-section" id="verbs">
+        <div class="verbs-tabs">
+            <button class="verb-tab active" onclick="setVerbMode('learn')" id="vLearn">📖 Ўрганиш</button>
+            <button class="verb-tab" onclick="setVerbMode('quiz')" id="vQuiz">🎯 Тест</button>
+            <button class="verb-tab" onclick="setVerbMode('sentences')" id="vSent">📝 Гаплар</button>
+            <button class="verb-tab" onclick="setVerbMode('list')" id="vList">📋 Рўйхат</button>
+        </div>
+        <div id="verbLearn">
+            <div class="selector">
+                <button class="arrow-btn" onclick="prevVerb()">←</button>
+                <div class="counter"><span class="cur" id="curVerb">1</span> / <span id="totalVerbs">20</span></div>
+                <button class="arrow-btn" onclick="nextVerb()">→</button>
+                <input type="number" class="goto" min="1" max="20" onchange="goToVerb(this.value)" placeholder="#">
+            </div>
+            <div class="aspect-pills">
+                <button class="aspect-pill active" onclick="setAspect('nsv')" id="aspNsv">НСВ (тугалланмаган)</button>
+                <button class="aspect-pill" onclick="setAspect('sv')" id="aspSv">СВ (тугаллаган)</button>
+            </div>
+            <div class="card" id="verbCard"></div>
+            <div class="hints"><kbd>←</kbd><kbd>→</kbd> навигация · <kbd>N</kbd> НСВ · <kbd>S</kbd> СВ</div>
+        </div>
+        <div id="verbQuiz" style="display:none">
+            <div class="quiz-modes">
+                <button class="mode-btn active" onclick="setVerbQuizType('conj')" id="vqConj">📝 Тусланиш</button>
+                <button class="mode-btn" onclick="setVerbQuizType('uz2ru')" id="vqUzRu">🇺🇿 → 🇷🇺</button>
+                <button class="mode-btn" onclick="setVerbQuizType('ru2uz')" id="vqRuUz">🇷🇺 → 🇺🇿</button>
+            </div>
+            <div class="quiz-box">
+                <div class="q-word" id="vqWord"></div>
+                <div class="q-case" id="vqInfo"></div>
+                <div class="q-hint" id="vqHint"></div>
+                <div id="vWriteMode">
+                    <input type="text" class="q-input" id="vqInput" placeholder="Жавобни киритинг..." autocomplete="off">
+                    <div class="q-btns">
+                        <button class="q-btn q-check" onclick="checkVerbWrite()">✓ Текшириш</button>
+                        <button class="q-btn q-skip" onclick="skipVerbQ()">→ Кейинги</button>
+                    </div>
+                </div>
+                <div id="vChoiceMode" style="display:none"><div class="options" id="vOptions"></div></div>
+                <div class="result" id="vqRes" style="display:none"></div>
+                <div class="sent-score">Феъл машқи: <span class="val"><span id="verbScore">0</span>/<span id="verbTries">0</span></span></div>
+            </div>
+        </div>
+        <div id="verbList" style="display:none" class="list"></div>
+        <div id="verbSentences" style="display:none">
+            <div class="sent-box">
+                <div class="sent-text" id="vSentText"></div>
+                <div class="sent-hint" id="vSentHint"></div>
+                <div class="sent-options" id="vSentOptions"></div>
+                <div class="result" id="vSentRes" style="display:none"></div>
+                <div class="sent-score">Феъл гаплар машқи: <span class="val"><span id="vSentScore">0</span>/<span id="vSentTries">0</span></span></div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="data_150.js?v=3"></script>
 <script src="sentences.js?v=3"></script>
+<script src="verbs.js?v=1"></script>
+<script src="verb_sentences.js?v=1"></script>
 <script>
 const CASES=[{ru:"Именительный",q:"кто? что?"},{ru:"Родительный",q:"кого? чего?"},{ru:"Дательный",q:"кому? чему?"},{ru:"Винительный",q:"кого? что?"},{ru:"Творительный",q:"кем? чем?"},{ru:"Предложный",q:"о ком? о чём?"}];
 const UZ_SUFFIX=["","нинг","га","ни"," билан"," ҳақида"];
@@ -574,12 +730,14 @@ function markDone(){learned.add(wordOrder[wordIdx]);updateStats();if(wordIdx<DAT
 function shuffle(){for(let i=wordOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[wordOrder[i],wordOrder[j]]=[wordOrder[j],wordOrder[i]]}wordIdx=0;adjIdx=0;render()}
 function updateStats(){document.getElementById("done").textContent=learned.size;document.getElementById("score").textContent=score;document.getElementById("tries").textContent=tries;document.getElementById("total").textContent=DATA.length;document.getElementById("prog").style.width=(learned.size/DATA.length*100)+"%"}
 function mode(m){
-    document.querySelectorAll(".nav-btn").forEach((b,i)=>b.classList.toggle("active",i===(m==="learn"?0:m==="quiz"?1:m==="sentences"?2:3)));
+    const modeIdx = {learn:0, quiz:1, sentences:2, list:3, verbs:4};
+    document.querySelectorAll(".nav-btn").forEach((b,i)=>b.classList.toggle("active",i===modeIdx[m]));
     document.getElementById("learn").style.display=m==="learn"?"block":"none";
     document.getElementById("quiz").classList.toggle("active",m==="quiz");
     document.getElementById("sentences").classList.toggle("active",m==="sentences");
     document.getElementById("list").classList.toggle("active",m==="list");
-    if(m==="quiz")genQ();if(m==="sentences")genSentence();if(m==="list")renderList()
+    document.getElementById("verbs").classList.toggle("active",m==="verbs");
+    if(m==="quiz")genQ();if(m==="sentences")genSentence();if(m==="list")renderList();if(m==="verbs")renderVerb();
 }
 function setQuizType(t){
     quizType=t;
@@ -770,6 +928,378 @@ function checkSentence(btn, sel, corr){
 
     setTimeout(genSentence, 1800);
 }
+
+// ===== VERBS SECTION =====
+let verbIdx = 0;
+let currentAspect = 'nsv';
+let verbMode = 'learn';
+let verbQuizType = 'conj';
+let verbScore = 0, verbTries = 0;
+let currentVerbAnswer = '';
+
+function setVerbMode(m) {
+    verbMode = m;
+    document.getElementById('vLearn').classList.toggle('active', m === 'learn');
+    document.getElementById('vQuiz').classList.toggle('active', m === 'quiz');
+    document.getElementById('vSent').classList.toggle('active', m === 'sentences');
+    document.getElementById('vList').classList.toggle('active', m === 'list');
+    document.getElementById('verbLearn').style.display = m === 'learn' ? 'block' : 'none';
+    document.getElementById('verbQuiz').style.display = m === 'quiz' ? 'block' : 'none';
+    document.getElementById('verbSentences').style.display = m === 'sentences' ? 'block' : 'none';
+    document.getElementById('verbList').style.display = m === 'list' ? 'grid' : 'none';
+    if (m === 'learn') renderVerb();
+    if (m === 'quiz') genVerbQ();
+    if (m === 'sentences') genVerbSentence();
+    if (m === 'list') renderVerbList();
+}
+
+function setAspect(asp) {
+    currentAspect = asp;
+    document.getElementById('aspNsv').classList.toggle('active', asp === 'nsv');
+    document.getElementById('aspSv').classList.toggle('active', asp === 'sv');
+    renderVerb();
+}
+
+function renderVerb() {
+    const v = VERBS[verbIdx];
+    if (!v) return;
+
+    document.getElementById('curVerb').textContent = verbIdx + 1;
+    document.getElementById('totalVerbs').textContent = VERBS.length;
+
+    const conj = currentAspect === 'nsv' ? v.nsv_conj : v.sv_conj;
+    const verbName = currentAspect === 'nsv' ? v.nsv : v.sv;
+    const aspectLabel = currentAspect === 'nsv' ? 'НСВ (тугалланмаган)' : 'СВ (тугаллаган)';
+
+    let html = `
+        <div class="card-head">
+            <div class="verb-pair">
+                <div class="verb-item ${currentAspect === 'nsv' ? 'active' : ''}">
+                    <div class="aspect">НСВ</div>
+                    <div class="verb">${v.nsv}</div>
+                </div>
+                <div class="verb-item ${currentAspect === 'sv' ? 'active' : ''}">
+                    <div class="aspect">СВ</div>
+                    <div class="verb">${v.sv}</div>
+                </div>
+            </div>
+            <div class="badges">
+                <span class="badge uz-badge">🇺🇿 ${v.uz}</span>
+                <span class="badge" style="background:rgba(99,102,241,0.5)">${v.group}</span>
+            </div>
+        </div>
+        <div class="cases">
+            <div style="text-align:center;padding:12px;color:var(--accent-1);font-weight:600;font-size:1.1em;">
+                ${verbName} — ${aspectLabel}
+            </div>
+    `;
+
+    // Conjugation table
+    for (let i = 0; i < 6; i++) {
+        const present = conj.present ? conj.present[i] : '—';
+        const future = conj.future ? conj.future[i] : '—';
+
+        html += `
+            <div class="conj-row">
+                <div class="pronoun">${PRONOUNS[i]}<br><span style="font-size:0.75em;color:var(--text-3)">${PRONOUNS_UZ[i]}</span></div>
+                <div class="tense-cell">
+                    <div class="lbl">Ҳозирги</div>
+                    <div class="form ${present === '—' ? 'na' : ''}">${present}</div>
+                </div>
+                <div class="tense-cell">
+                    <div class="lbl">Ўтган</div>
+                    <div class="form">${i < 4 ? conj.past[i] : '—'}</div>
+                </div>
+                <div class="tense-cell">
+                    <div class="lbl">Келаси</div>
+                    <div class="form">${future}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    html += '</div>';
+    document.getElementById('verbCard').innerHTML = html;
+}
+
+function prevVerb() { if (verbIdx > 0) { verbIdx--; renderVerb(); } }
+function nextVerb() { if (verbIdx < VERBS.length - 1) { verbIdx++; renderVerb(); } }
+function goToVerb(n) {
+    const num = parseInt(n);
+    if (num >= 1 && num <= VERBS.length) { verbIdx = num - 1; renderVerb(); }
+}
+
+function renderVerbList() {
+    let html = '<div class="search-wrap"><input type="text" class="search-input" id="verbSearchInput" placeholder="🔍 Қидириш..." oninput="filterVerbList()"></div>';
+    html += VERBS.map((v, i) => `
+        <div class="list-card" onclick="verbIdx=${i};setVerbMode('learn')" data-word="${v.nsv} ${v.sv} ${v.uz}">
+            <div class="num">${i + 1}</div>
+            <div class="word">${v.nsv} / ${v.sv}</div>
+            <div class="meaning">${v.uz}</div>
+        </div>
+    `).join('');
+    document.getElementById('verbList').innerHTML = html;
+}
+
+function filterVerbList() {
+    const q = document.getElementById('verbSearchInput').value.toLowerCase();
+    document.querySelectorAll('#verbList .list-card[data-word]').forEach(el => {
+        el.style.display = el.dataset.word.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+
+function setVerbQuizType(t) {
+    verbQuizType = t;
+    document.getElementById('vqConj').classList.toggle('active', t === 'conj');
+    document.getElementById('vqUzRu').classList.toggle('active', t === 'uz2ru');
+    document.getElementById('vqRuUz').classList.toggle('active', t === 'ru2uz');
+    document.getElementById('vWriteMode').style.display = t === 'conj' ? 'block' : 'none';
+    document.getElementById('vChoiceMode').style.display = t !== 'conj' ? 'block' : 'none';
+    genVerbQ();
+}
+
+function genVerbQ() {
+    const vI = Math.floor(Math.random() * VERBS.length);
+    const v = VERBS[vI];
+    const asp = Math.random() > 0.5 ? 'nsv' : 'sv';
+    const conj = asp === 'nsv' ? v.nsv_conj : v.sv_conj;
+    const verbName = asp === 'nsv' ? v.nsv : v.sv;
+    const aspLabel = asp === 'nsv' ? 'НСВ' : 'СВ';
+
+    document.getElementById('vqRes').style.display = 'none';
+
+    if (verbQuizType === 'conj') {
+        // Random tense and person
+        const tenses = ['present', 'past', 'future'];
+        let tense, pIdx, form;
+        let attempts = 0;
+        do {
+            tense = tenses[Math.floor(Math.random() * 3)];
+            pIdx = tense === 'past' ? Math.floor(Math.random() * 4) : Math.floor(Math.random() * 6);
+            form = conj[tense] ? conj[tense][pIdx] : null;
+            attempts++;
+        } while ((!form || form === '—') && attempts < 20);
+
+        if (!form || form === '—') { genVerbQ(); return; }
+
+        currentVerbAnswer = form;
+        const tenseNames = { present: 'Ҳозирги', past: 'Ўтган', future: 'Келаси' };
+        const personLabel = tense === 'past' ? PAST_LABELS[pIdx] : PRONOUNS[pIdx];
+
+        document.getElementById('vqWord').textContent = verbName;
+        document.getElementById('vqInfo').textContent = `${aspLabel} — ${tenseNames[tense]} замон`;
+        document.getElementById('vqHint').textContent = tense === 'past' ? `${personLabel} род` : personLabel;
+        document.getElementById('vqHint').style.display = 'inline-block';
+        document.getElementById('vqInput').value = '';
+        document.getElementById('vqInput').focus();
+    } else if (verbQuizType === 'uz2ru') {
+        // Uzbek to Russian
+        document.getElementById('vqWord').textContent = '🇺🇿 ' + v.uz;
+        document.getElementById('vqInfo').textContent = 'Русча феълни топинг';
+        document.getElementById('vqHint').style.display = 'none';
+        currentVerbAnswer = v.nsv;
+
+        // Generate options
+        const opts = [v.nsv];
+        const allVerbs = VERBS.filter((x, i) => i !== vI).map(x => x.nsv);
+        while (opts.length < 4 && allVerbs.length > 0) {
+            const i = Math.floor(Math.random() * allVerbs.length);
+            opts.push(allVerbs.splice(i, 1)[0]);
+        }
+        shuffleArray(opts);
+        document.getElementById('vOptions').innerHTML = opts.map(o =>
+            `<button class="opt-btn" onclick="checkVerbOpt(this,'${o.replace(/'/g,"\\'")}','${currentVerbAnswer.replace(/'/g,"\\'")}')">${o}</button>`
+        ).join('');
+    } else {
+        // Russian to Uzbek
+        document.getElementById('vqWord').textContent = '🇷🇺 ' + v.nsv + ' / ' + v.sv;
+        document.getElementById('vqInfo').textContent = 'Ўзбекча таржимани топинг';
+        document.getElementById('vqHint').style.display = 'none';
+        currentVerbAnswer = v.uz;
+
+        const opts = [v.uz];
+        const allUz = VERBS.filter((x, i) => i !== vI).map(x => x.uz);
+        while (opts.length < 4 && allUz.length > 0) {
+            const i = Math.floor(Math.random() * allUz.length);
+            opts.push(allUz.splice(i, 1)[0]);
+        }
+        shuffleArray(opts);
+        document.getElementById('vOptions').innerHTML = opts.map(o =>
+            `<button class="opt-btn" onclick="checkVerbOpt(this,'${o.replace(/'/g,"\\'")}','${currentVerbAnswer.replace(/'/g,"\\'")}')">${o}</button>`
+        ).join('');
+    }
+}
+
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+
+function checkVerbWrite() {
+    const user = document.getElementById('vqInput').value.trim().toLowerCase();
+    const corr = currentVerbAnswer.toLowerCase();
+    verbTries++;
+    const res = document.getElementById('vqRes');
+
+    if (user === corr) {
+        verbScore++;
+        res.className = 'result ok';
+        res.innerHTML = '✅ Тўғри!';
+    } else {
+        res.className = 'result no';
+        res.innerHTML = `❌ <div class="answer">${currentVerbAnswer}</div>`;
+    }
+    res.style.display = 'block';
+    document.getElementById('verbScore').textContent = verbScore;
+    document.getElementById('verbTries').textContent = verbTries;
+    setTimeout(genVerbQ, 1800);
+}
+
+function skipVerbQ() {
+    const res = document.getElementById('vqRes');
+    res.className = 'result no';
+    res.innerHTML = `<div class="answer">${currentVerbAnswer}</div>`;
+    res.style.display = 'block';
+    verbTries++;
+    document.getElementById('verbScore').textContent = verbScore;
+    document.getElementById('verbTries').textContent = verbTries;
+    setTimeout(genVerbQ, 1200);
+}
+
+function checkVerbOpt(btn, sel, corr) {
+    document.querySelectorAll('#vOptions .opt-btn').forEach(b => {
+        b.disabled = true;
+        if (b.textContent === corr) b.classList.add('correct');
+    });
+    verbTries++;
+    const res = document.getElementById('vqRes');
+
+    if (sel === corr) {
+        verbScore++;
+        btn.classList.add('correct');
+        res.className = 'result ok';
+        res.innerHTML = '✅ Тўғри!';
+    } else {
+        btn.classList.add('wrong');
+        res.className = 'result no';
+        res.innerHTML = `❌ <div class="answer">${corr}</div>`;
+    }
+    res.style.display = 'block';
+    document.getElementById('verbScore').textContent = verbScore;
+    document.getElementById('verbTries').textContent = verbTries;
+    setTimeout(genVerbQ, 1500);
+}
+
+// ===== VERB SENTENCES =====
+let vSentScore = 0, vSentTries = 0, currentVSentAnswer = '';
+
+function genVerbSentence() {
+    const sentIdx = Math.floor(Math.random() * VERB_SENTENCES.length);
+    const sent = VERB_SENTENCES[sentIdx];
+    const { vI, asp, tense, pIdx, sentence, answer } = sent;
+
+    const v = VERBS[vI];
+    if (!v) { genVerbSentence(); return; }
+
+    currentVSentAnswer = answer;
+
+    const verbName = asp === 'nsv' ? v.nsv : v.sv;
+    const aspLabel = asp === 'nsv' ? 'НСВ' : 'СВ';
+    const tenseNames = { present: 'ҳозирги', past: 'ўтган', future: 'келаси' };
+    const personLabel = tense === 'past' ? PAST_LABELS[pIdx] : PRONOUNS[pIdx];
+
+    document.getElementById('vSentText').innerHTML = sentence.replace('___', '<span class="sent-blank">?</span>');
+    document.getElementById('vSentHint').innerHTML = `<strong>${verbName}</strong> (${aspLabel}) — ${tenseNames[tense]} замон, ${personLabel}`;
+    document.getElementById('vSentRes').style.display = 'none';
+
+    // Generate options from same verb's forms
+    const conj = asp === 'nsv' ? v.nsv_conj : v.sv_conj;
+    const opts = [answer];
+    const allForms = [];
+
+    // Collect other forms from same tense
+    if (conj[tense]) {
+        conj[tense].forEach((f, i) => {
+            if (i !== pIdx && f && f !== '—' && f !== answer && !allForms.includes(f)) {
+                allForms.push(f);
+            }
+        });
+    }
+
+    // Collect forms from other tenses
+    ['present', 'past', 'future'].forEach(t => {
+        if (t !== tense && conj[t]) {
+            conj[t].forEach(f => {
+                if (f && f !== '—' && f !== answer && !allForms.includes(f)) {
+                    allForms.push(f);
+                }
+            });
+        }
+    });
+
+    // Also add forms from the other aspect
+    const otherConj = asp === 'nsv' ? v.sv_conj : v.nsv_conj;
+    ['present', 'past', 'future'].forEach(t => {
+        if (otherConj[t]) {
+            otherConj[t].forEach(f => {
+                if (f && f !== '—' && f !== answer && !allForms.includes(f)) {
+                    allForms.push(f);
+                }
+            });
+        }
+    });
+
+    // Pick 2 random wrong options
+    while (opts.length < 3 && allForms.length > 0) {
+        const i = Math.floor(Math.random() * allForms.length);
+        opts.push(allForms.splice(i, 1)[0]);
+    }
+
+    shuffleArray(opts);
+
+    document.getElementById('vSentOptions').innerHTML = opts.map(o =>
+        `<button class="sent-opt" onclick="checkVerbSentence(this,'${o.replace(/'/g,"\\'")}','${currentVSentAnswer.replace(/'/g,"\\'")}')">${o}</button>`
+    ).join('');
+}
+
+function checkVerbSentence(btn, sel, corr) {
+    document.querySelectorAll('#vSentOptions .sent-opt').forEach(b => {
+        b.disabled = true;
+        if (b.textContent === corr) b.classList.add('correct');
+    });
+    vSentTries++;
+    const res = document.getElementById('vSentRes');
+
+    if (sel === corr) {
+        vSentScore++;
+        btn.classList.add('correct');
+        res.className = 'result ok';
+        res.innerHTML = '✅ Тўғри!';
+    } else {
+        btn.classList.add('wrong');
+        res.className = 'result no';
+        res.innerHTML = `❌ Тўғри жавоб: <div class="answer">${corr}</div>`;
+    }
+    res.style.display = 'block';
+    document.getElementById('vSentScore').textContent = vSentScore;
+    document.getElementById('vSentTries').textContent = vSentTries;
+
+    setTimeout(genVerbSentence, 1800);
+}
+
+// Keyboard for verbs
+document.addEventListener('keydown', e => {
+    const verbsOn = document.getElementById('verbs').classList.contains('active');
+    if (verbsOn && verbMode === 'learn') {
+        if (e.key === 'ArrowLeft') prevVerb();
+        if (e.key === 'ArrowRight') nextVerb();
+        if (e.key === 'n' || e.key === 'N') setAspect('nsv');
+        if (e.key === 's' || e.key === 'S') setAspect('sv');
+    }
+    if (verbsOn && verbMode === 'quiz' && verbQuizType === 'conj' && e.key === 'Enter') checkVerbWrite();
+});
 
 render();updateStats()
 </script>
