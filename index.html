@@ -679,7 +679,9 @@ function genSentence(){
     const {wI, aI, cI, pl, sentence, answer} = sent;
 
     const d = DATA[wI];
+    if(!d) { console.error("DATA["+wI+"] not found!"); genSentence(); return; }
     const [noun, gender, nUz, nUzPl, adjs] = d;
+    if(!adjs || !adjs[aI]) { console.error("adjs["+aI+"] not found for wI="+wI); genSentence(); return; }
     const [adj, adjUz, forms] = adjs[aI];
     const correctForm = answer;
 
