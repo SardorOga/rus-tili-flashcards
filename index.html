@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рус тили — 150 от + сифат</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a28;
+            --bg-elevated: #242438;
+            --accent-1: #6366f1;
+            --accent-2: #8b5cf6;
+            --accent-3: #a855f7;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+            --text-1: #f1f5f9;
+            --text-2: #94a3b8;
+            --text-3: #64748b;
+            --border: rgba(255,255,255,0.06);
+            --glow: rgba(99,102,241,0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-1);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, var(--glow), transparent),
+                radial-gradient(ellipse 60% 40% at 100% 100%, rgba(139,92,246,0.08), transparent);
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(18,18,26,0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner { max-width: 900px; margin: 0 auto; }
+        .header h1 {
+            font-size: 1.4em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-1) 50%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+        .stat-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 100px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        .stat-chip .val { color: var(--accent-1); font-weight: 600; }
+        .progress-track {
+            height: 6px;
+            background: var(--bg-card);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            border-radius: 100px;
+            transition: width 0.4s ease;
+            position: relative;
+        }
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+        @keyframes shine {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text-2);
+            font-family: inherit;
+            font-size: 0.875em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { background: var(--bg-card); color: var(--text-1); }
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: #fff;
+            box-shadow: 0 4px 20px var(--glow);
+        }
+
+        /* Main Container */
+        .main { max-width: 850px; margin: 0 auto; padding: 20px 16px; position: relative; z-index: 1; }
+
+        /* Selector */
+        .selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .arrow-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-1);
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: grid;
+            place-items: center;
+        }
+        .arrow-btn:hover:not(:disabled) {
+            background: var(--accent-1);
+            border-color: var(--accent-1);
+            transform: scale(1.05);
+        }
+        .arrow-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .counter {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            min-width: 100px;
+            text-align: center;
+        }
+        .counter .cur { color: var(--accent-1); }
+        .goto {
+            width: 60px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-1);
+            font-family: inherit;
+            font-size: 0.9em;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .goto:focus { outline: none; border-color: var(--accent-1); box-shadow: 0 0 0 3px var(--glow); }
+
+        /* Adjective Pills */
+        .adj-pills {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .adj-pill {
+            padding: 10px 18px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: var(--bg-card);
+            color: var(--text-2);
+            font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .adj-pill:hover { border-color: var(--accent-1); color: var(--text-1); }
+        .adj-pill.active {
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15));
+            border-color: var(--accent-1);
+            color: var(--text-1);
+        }
+
+        /* Card */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 60px var(--glow);
+        }
+        .card-head {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            padding: 28px 24px;
+            text-align: center;
+            position: relative;
+        }
+        .card-head::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .phrase { font-size: 2em; font-weight: 700; margin-bottom: 12px; position: relative; text-shadow: 0 2px 20px rgba(0,0,0,0.2); }
+        .badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; position: relative; }
+        .badge {
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.85em;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+        .g-m { background: rgba(59,130,246,0.85); }
+        .g-f { background: rgba(236,72,153,0.85); }
+        .g-n { background: rgba(34,197,94,0.85); }
+        .g-pl { background: rgba(168,85,247,0.85); }
+        .uz-badge { background: rgba(255,255,255,0.2); }
+
+        /* Cases */
+        .cases { padding: 16px; }
+        .case-row {
+            display: grid;
+            grid-template-columns: 130px 1fr 1fr;
+            gap: 10px;
+            padding: 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        .case-row:hover { transform: translateX(4px); border-color: rgba(99,102,241,0.3); }
+        .case-row:last-child { margin-bottom: 0; }
+        @media (max-width: 600px) {
+            .case-row { grid-template-columns: 1fr; text-align: center; }
+            .case-lbl { border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 8px; }
+        }
+        .case-lbl { display: flex; flex-direction: column; justify-content: center; }
+        .case-name { color: var(--accent-1); font-weight: 600; font-size: 0.95em; }
+        .case-q { color: var(--text-3); font-size: 0.8em; }
+        .form-cell {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+        .form-cell .lbl { font-size: 0.7em; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .form-cell .ru { font-weight: 600; font-size: 0.95em; margin-bottom: 4px; }
+        .form-cell .uz { color: var(--success); font-size: 0.85em; }
+
+        /* Hints */
+        .hints { text-align: center; padding: 14px; color: var(--text-3); font-size: 0.8em; }
+        kbd { background: var(--bg-card); border: 1px solid var(--border); padding: 3px 8px; border-radius: 6px; font-family: inherit; margin: 0 2px; }
+
+        /* Quiz */
+        .quiz { display: none; padding: 16px; }
+        .quiz.active { display: block; }
+        .quiz-modes { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .mode-btn {
+            padding: 10px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text-2);
+            font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mode-btn:hover { border-color: var(--accent-1); color: var(--text-1); }
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border-color: transparent;
+            color: #fff;
+        }
+        .quiz-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .q-word { font-size: 1.8em; font-weight: 700; margin-bottom: 10px; }
+        .q-case { color: var(--accent-1); font-weight: 500; margin-bottom: 8px; }
+        .q-hint {
+            display: inline-block;
+            color: var(--success);
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.2);
+            padding: 8px 18px;
+            border-radius: 100px;
+            margin-bottom: 8px;
+        }
+        .q-num { color: var(--text-3); font-size: 0.9em; margin-bottom: 16px; }
+        .q-input {
+            width: 100%;
+            max-width: 320px;
+            padding: 14px 20px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--bg-secondary);
+            color: var(--text-1);
+            font-family: inherit;
+            font-size: 1.1em;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .q-input:focus { outline: none; border-color: var(--accent-1); box-shadow: 0 0 0 4px var(--glow); }
+        .q-btns { margin-top: 16px; display: flex; justify-content: center; gap: 10px; }
+        .q-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .q-check { background: linear-gradient(135deg, var(--success), #16a34a); color: #fff; }
+        .q-check:hover { transform: scale(1.03); box-shadow: 0 4px 20px rgba(34,197,94,0.3); }
+        .q-skip { background: var(--bg-elevated); color: var(--text-2); border: 1px solid var(--border); }
+        .q-skip:hover { color: var(--text-1); }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px auto; max-width: 420px; }
+        @media (max-width: 480px) { .options { grid-template-columns: 1fr; } }
+        .opt-btn {
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-elevated);
+            color: var(--text-1);
+            font-family: inherit;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--accent-1); transform: translateY(-2px); }
+        .opt-btn.correct { border-color: var(--success); background: rgba(34,197,94,0.15); }
+        .opt-btn.wrong { border-color: var(--danger); background: rgba(239,68,68,0.15); animation: shake 0.4s; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+        .opt-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .result { padding: 16px; border-radius: 12px; margin-top: 16px; font-weight: 500; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+        .result.ok { background: rgba(34,197,94,0.12); border: 1px solid var(--success); color: var(--success); }
+        .result.no { background: rgba(239,68,68,0.12); border: 1px solid var(--danger); color: var(--danger); }
+        .answer { color: var(--accent-1); font-weight: 600; margin-top: 8px; font-size: 1.1em; }
+
+        /* Sentences */
+        .sentences { display: none; padding: 16px; }
+        .sentences.active { display: block; }
+        .sent-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .sent-text {
+            font-size: 1.4em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--text-1);
+        }
+        .sent-blank {
+            display: inline-block;
+            min-width: 180px;
+            border-bottom: 3px dashed var(--accent-1);
+            color: var(--accent-1);
+            font-weight: 700;
+            padding: 4px 8px;
+            margin: 0 4px;
+        }
+        .sent-hint {
+            color: var(--text-3);
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        .sent-hint strong { color: var(--warning); }
+        .sent-options { display: flex; flex-direction: column; gap: 10px; max-width: 500px; margin: 0 auto; }
+        .sent-opt {
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--bg-elevated);
+            color: var(--text-1);
+            font-family: inherit;
+            font-size: 1.05em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .sent-opt:hover:not(:disabled) { border-color: var(--accent-1); transform: translateX(4px); background: var(--bg-card); }
+        .sent-opt.correct { border-color: var(--success); background: rgba(34,197,94,0.15); }
+        .sent-opt.wrong { border-color: var(--danger); background: rgba(239,68,68,0.15); animation: shake 0.4s; }
+        .sent-opt:disabled { cursor: not-allowed; opacity: 0.7; }
+        .sent-score { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--text-2); font-size: 0.9em; }
+        .sent-score .val { color: var(--accent-1); font-weight: 600; }
+
+        /* List */
+        .list { display: none; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+        .list.active { display: grid; }
+        .search-wrap { grid-column: 1/-1; text-align: center; margin-bottom: 6px; }
+        .search-input {
+            width: 100%;
+            max-width: 360px;
+            padding: 12px 20px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: var(--bg-card);
+            color: var(--text-1);
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: all 0.2s;
+        }
+        .search-input:focus { outline: none; border-color: var(--accent-1); box-shadow: 0 0 0 4px var(--glow); }
+        .list-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 14px 10px;
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .list-card:hover { transform: translateY(-4px); border-color: var(--accent-1); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+        .list-card.done { background: rgba(34,197,94,0.12); border-color: var(--success); }
+        .list-card .num { font-size: 0.75em; color: var(--text-3); margin-bottom: 4px; }
+        .list-card .word { font-weight: 600; margin-bottom: 4px; }
+        .list-card .meaning { font-size: 0.85em; color: var(--success); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-1); }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-inner">
+        <h1>🇷🇺 Рус тили — 150 та от + сифат падежлари</h1>
+        <div class="stats-row">
+            <div class="stat-chip">📚 Жами: <span class="val" id="total">150</span></div>
+            <div class="stat-chip">✅ Ўрганилди: <span class="val" id="done">0</span></div>
+            <div class="stat-chip">🎯 Балл: <span class="val"><span id="score">0</span>/<span id="tries">0</span></span></div>
+        </div>
+        <div class="progress-track"><div class="progress-bar" id="prog" style="width:0%"></div></div>
+    </div>
+</div>
+<div class="nav">
+    <button class="nav-btn active" onclick="mode('learn')">📖 Ўрганиш</button>
+    <button class="nav-btn" onclick="mode('quiz')">🎯 Тест</button>
+    <button class="nav-btn" onclick="mode('sentences')">📝 Гаплар</button>
+    <button class="nav-btn" onclick="mode('list')">📋 Рўйхат</button>
+    <button class="nav-btn" onclick="markDone()">✅ Ўргандим</button>
+    <button class="nav-btn" onclick="shuffle()">🔀 Аралаш</button>
+</div>
+<div class="main">
+    <div id="learn">
+        <div class="selector">
+            <button class="arrow-btn" onclick="prevWord()">←</button>
+            <div class="counter"><span class="cur" id="curWord">1</span> / <span id="totalWords">150</span></div>
+            <button class="arrow-btn" onclick="nextWord()">→</button>
+            <input type="number" class="goto" min="1" max="150" onchange="goToNum(this.value)" placeholder="#">
+        </div>
+        <div class="adj-pills" id="adjSelector"></div>
+        <div class="card" id="card"></div>
+        <div class="hints"><kbd>←</kbd><kbd>→</kbd> навигация · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> сифат · <kbd>Space</kbd> ўргандим</div>
+    </div>
+    <div class="quiz" id="quiz">
+        <div class="quiz-modes">
+            <button class="mode-btn active" onclick="setQuizType('write')" id="qtWrite">✍️ Ёзиш</button>
+            <button class="mode-btn" onclick="setQuizType('uz2ru')" id="qtUzRu">🇺🇿 → 🇷🇺</button>
+            <button class="mode-btn" onclick="setQuizType('ru2uz')" id="qtRuUz">🇷🇺 → 🇺🇿</button>
+        </div>
+        <div class="quiz-box">
+            <div class="q-word" id="qWord"></div>
+            <div class="q-case" id="qCase"></div>
+            <div class="q-hint" id="qHint"></div>
+            <div class="q-num" id="qNum"></div>
+            <div id="writeMode">
+                <input type="text" class="q-input" id="qInput" placeholder="Жавобни киритинг..." autocomplete="off">
+                <div class="q-btns">
+                    <button class="q-btn q-check" onclick="checkWrite()">✓ Текшириш</button>
+                    <button class="q-btn q-skip" onclick="skipQ()">→ Кейинги</button>
+                </div>
+            </div>
+            <div id="choiceMode" style="display:none"><div class="options" id="options"></div></div>
+            <div class="result" id="qRes" style="display:none"></div>
+        </div>
+    </div>
+    <div class="list" id="list"></div>
+    <div class="sentences" id="sentences">
+        <div class="sent-box">
+            <div class="sent-text" id="sentText"></div>
+            <div class="sent-hint" id="sentHint"></div>
+            <div class="sent-options" id="sentOptions"></div>
+            <div class="result" id="sentRes" style="display:none"></div>
+            <div class="sent-score">Гаплар машқи: <span class="val"><span id="sentScore">0</span>/<span id="sentTries">0</span></span></div>
+        </div>
+    </div>
+</div>
+<script src="data_150.js"></script>
+<script>
+const CASES=[{ru:"Именительный",q:"кто? что?"},{ru:"Родительный",q:"кого? чего?"},{ru:"Дательный",q:"кому? чему?"},{ru:"Винительный",q:"кого? что?"},{ru:"Творительный",q:"кем? чем?"},{ru:"Предложный",q:"о ком? о чём?"}];
+const UZ_SUFFIX=["","нинг","га","ни"," билан"," ҳақида"];
+const GENDER_CLASS={м:"g-m",ж:"g-f",ср:"g-n",мн:"g-pl"};
+const GENDER_NAME={м:"муж.",ж:"жен.",ср:"ср.",мн:"мн."};
+let wordIdx=0,adjIdx=0,learned=new Set(),score=0,tries=0,quizType="write",currentAnswer="",currentUzAnswer="";
+let wordOrder=[...Array(DATA.length).keys()];
+function getUzPhrase(n,a,s){return a+" "+n+s}
+function renderAdjBtns(){const d=DATA[wordOrder[wordIdx]];document.getElementById("adjSelector").innerHTML=d[4].map((a,i)=>`<button class="adj-pill ${i===adjIdx?'active':''}" onclick="setAdj(${i})">${a[0]} <span style="opacity:0.7">(${a[1]})</span></button>`).join("")}
+function render(){
+    const d=DATA[wordOrder[wordIdx]];const[noun,gender,nUz,nUzPl,adjs]=d;const[adj,adjUz,forms]=adjs[adjIdx];const[sgForms,plForms]=forms;
+    let h=`<div class="card-head"><div class="phrase">${adj} ${noun}</div><div class="badges"><span class="badge ${GENDER_CLASS[gender]}">${GENDER_NAME[gender]}</span><span class="badge uz-badge">🇺🇿 ${adjUz} ${nUz}</span></div></div><div class="cases">`;
+    for(let c=0;c<6;c++){
+        const sg=sgForms[c],pl=plForms[c];
+        const uzSg=nUz&&nUz!=="—"?getUzPhrase(nUz,adjUz,UZ_SUFFIX[c]):"—";
+        const uzPl=nUzPl&&nUzPl!=="—"?getUzPhrase(nUzPl,adjUz,UZ_SUFFIX[c]):"—";
+        h+=`<div class="case-row"><div class="case-lbl"><div class="case-name">${CASES[c].ru}</div><div class="case-q">${CASES[c].q}</div></div><div class="form-cell"><div class="lbl">ед.ч.</div><div class="ru">${sg}</div><div class="uz">${uzSg}</div></div><div class="form-cell"><div class="lbl">мн.ч.</div><div class="ru">${pl}</div><div class="uz">${uzPl}</div></div></div>`;
+    }
+    h+=`</div>`;document.getElementById("card").innerHTML=h;document.getElementById("curWord").textContent=wordIdx+1;document.getElementById("totalWords").textContent=DATA.length;renderAdjBtns()
+}
+function setAdj(i){adjIdx=i;render()}
+function prevWord(){if(wordIdx>0){wordIdx--;adjIdx=0;render()}}
+function nextWord(){if(wordIdx<DATA.length-1){wordIdx++;adjIdx=0;render()}}
+function goToNum(v){const n=parseInt(v);if(n>=1&&n<=DATA.length){wordIdx=n-1;adjIdx=0;render()}}
+function markDone(){learned.add(wordOrder[wordIdx]);updateStats();if(wordIdx<DATA.length-1)nextWord()}
+function shuffle(){for(let i=wordOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[wordOrder[i],wordOrder[j]]=[wordOrder[j],wordOrder[i]]}wordIdx=0;adjIdx=0;render()}
+function updateStats(){document.getElementById("done").textContent=learned.size;document.getElementById("score").textContent=score;document.getElementById("tries").textContent=tries;document.getElementById("total").textContent=DATA.length;document.getElementById("prog").style.width=(learned.size/DATA.length*100)+"%"}
+function mode(m){
+    document.querySelectorAll(".nav-btn").forEach((b,i)=>b.classList.toggle("active",i===(m==="learn"?0:m==="quiz"?1:m==="sentences"?2:3)));
+    document.getElementById("learn").style.display=m==="learn"?"block":"none";
+    document.getElementById("quiz").classList.toggle("active",m==="quiz");
+    document.getElementById("sentences").classList.toggle("active",m==="sentences");
+    document.getElementById("list").classList.toggle("active",m==="list");
+    if(m==="quiz")genQ();if(m==="sentences")genSentence();if(m==="list")renderList()
+}
+function setQuizType(t){
+    quizType=t;
+    document.getElementById("qtWrite").classList.toggle("active",t==="write");
+    document.getElementById("qtUzRu").classList.toggle("active",t==="uz2ru");
+    document.getElementById("qtRuUz").classList.toggle("active",t==="ru2uz");
+    document.getElementById("writeMode").style.display=t==="write"?"block":"none";
+    document.getElementById("choiceMode").style.display=t!=="write"?"block":"none";
+    genQ()
+}
+function genQ(){
+    const wI=Math.floor(Math.random()*DATA.length),aI=Math.floor(Math.random()*3),cI=Math.floor(Math.random()*6),pl=Math.random()>0.5;
+    const d=DATA[wI],[noun,gender,nUz,nUzPl,adjs]=d,[adj,adjUz,forms]=adjs[aI],ruForm=forms[pl?1:0][cI];
+    if(ruForm==="—"){genQ();return}
+    const nounUz=pl?nUzPl:nUz;if(!nounUz||nounUz==="—"){genQ();return}
+    const uzForm=getUzPhrase(nounUz,adjUz,UZ_SUFFIX[cI]);currentAnswer=ruForm;currentUzAnswer=uzForm;
+    const basePhrase=adj+" "+noun,numTxt=pl?"Кўплик (мн.ч.)":"Бирлик (ед.ч.)";
+    document.getElementById("qRes").style.display="none";
+    if(quizType==="write"){
+        document.getElementById("qWord").textContent=basePhrase;
+        document.getElementById("qCase").textContent=CASES[cI].ru+" ("+CASES[cI].q+")";
+        document.getElementById("qHint").textContent="🇺🇿 "+uzForm;
+        document.getElementById("qHint").style.display="inline-block";
+        document.getElementById("qNum").textContent=numTxt;
+        document.getElementById("qInput").value="";document.getElementById("qInput").focus()
+    }else if(quizType==="uz2ru"){
+        document.getElementById("qWord").textContent="🇺🇿 "+uzForm;
+        document.getElementById("qCase").textContent=basePhrase+" — "+CASES[cI].ru;
+        document.getElementById("qHint").style.display="none";
+        document.getElementById("qNum").textContent=numTxt+" — Тўғри шаклни топинг";
+        genOpts("ru",ruForm,cI,pl,wI,aI)
+    }else{
+        document.getElementById("qWord").textContent="🇷🇺 "+ruForm;
+        document.getElementById("qCase").textContent=basePhrase+" — "+CASES[cI].ru;
+        document.getElementById("qHint").style.display="none";
+        document.getElementById("qNum").textContent=numTxt+" — Таржимани топинг";
+        genOpts("uz",uzForm,cI,pl,wI,aI)
+    }
+}
+function genOpts(lang,correct,cI,pl,wI,aI){
+    const d=DATA[wI],[noun,gender,nUz,nUzPl,adjs]=d,[adj,adjUz,forms]=adjs[aI];
+    const opts=[correct],all=[];
+    for(let c=0;c<6;c++){
+        if(c===cI)continue;let form;
+        if(lang==="ru"){form=forms[pl?1:0][c]}else{const nU=pl?nUzPl:nUz;if(!nU||nU==="—")continue;form=getUzPhrase(nU,adjUz,UZ_SUFFIX[c])}
+        if(form&&form!=="—"&&form!==correct&&!all.includes(form))all.push(form)
+    }
+    while(opts.length<4&&all.length>0){const i=Math.floor(Math.random()*all.length);opts.push(all.splice(i,1)[0])}
+    for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]}
+    document.getElementById("options").innerHTML=opts.map(o=>`<button class="opt-btn" onclick="checkOpt(this,'${o.replace(/'/g,"\\'")}','${correct.replace(/'/g,"\\'")}')">${o}</button>`).join("")
+}
+function checkOpt(btn,sel,corr){
+    document.querySelectorAll(".opt-btn").forEach(b=>{b.disabled=true;if(b.textContent===corr)b.classList.add("correct")});
+    tries++;const res=document.getElementById("qRes");
+    if(sel===corr){score++;btn.classList.add("correct");res.className="result ok";res.innerHTML="✅ Тўғри!"}
+    else{btn.classList.add("wrong");res.className="result no";res.innerHTML=`❌<div class="answer">${corr}</div>`}
+    res.style.display="block";updateStats();setTimeout(genQ,1500)
+}
+function checkWrite(){
+    const user=document.getElementById("qInput").value.trim().toLowerCase(),corr=currentAnswer.toLowerCase();
+    tries++;const res=document.getElementById("qRes");
+    if(user===corr){score++;res.className="result ok";res.innerHTML="✅ Тўғри!"}
+    else{res.className="result no";res.innerHTML=`❌<div class="answer">${currentAnswer}</div>`}
+    res.style.display="block";updateStats();setTimeout(genQ,1800)
+}
+function skipQ(){
+    const res=document.getElementById("qRes");
+    res.className="result no";res.innerHTML=`<div class="answer">${currentAnswer}</div>`;
+    res.style.display="block";tries++;updateStats();setTimeout(genQ,1200)
+}
+function renderList(){
+    let h=`<div class="search-wrap"><input type="text" class="search-input" id="searchInput" placeholder="🔍 Қидириш..." oninput="filterList()"></div>`;
+    h+=DATA.map((d,i)=>`<div class="list-card ${learned.has(i)?'done':''}" onclick="goTo(${i})" data-word="${d[0]} ${d[2]}"><div class="num">${i+1}</div><div class="word">${d[0]}</div><div class="meaning">${d[2]}</div></div>`).join("");
+    document.getElementById("list").innerHTML=h
+}
+function filterList(){
+    const q=document.getElementById("searchInput").value.toLowerCase();
+    document.querySelectorAll(".list-card[data-word]").forEach(el=>{el.style.display=el.dataset.word.toLowerCase().includes(q)?"":"none"})
+}
+function goTo(i){wordOrder=[...Array(DATA.length).keys()];wordIdx=i;adjIdx=0;mode("learn");render()}
+document.addEventListener("keydown",e=>{
+    const learnOn=document.getElementById("learn").style.display!=="none";
+    const quizOn=document.getElementById("quiz").classList.contains("active");
+    if(learnOn){
+        if(e.key==="ArrowLeft")prevWord();if(e.key==="ArrowRight")nextWord();
+        if(e.key==="1")setAdj(0);if(e.key==="2")setAdj(1);if(e.key==="3")setAdj(2);
+        if(e.key===" "){e.preventDefault();markDone()}
+    }
+    if(quizOn&&quizType==="write"&&e.key==="Enter")checkWrite()
+});
+// Har bir padej uchun universal shablon gaplar (grammatik jihatdan to'g'ri)
+const SENT_TEMPLATES = {
+    // cI: 0 - Именительный (кто? что?)
+    0: [
+        {t: "Это ___.", h: "Именительный падеж"},
+        {t: "Вот ___.", h: "Именительный падеж"},
+        {t: "Здесь ___.", h: "Именительный падеж"},
+        {t: "Там ___.", h: "Именительный падеж"}
+    ],
+    // cI: 1 - Родительный (кого? чего?) - "нет", "много", "из", "от", "без", "для", "у"
+    1: [
+        {t: "Здесь нет ___.", h: "Родительный падеж"},
+        {t: "Это цвет ___.", h: "Родительный падеж"},
+        {t: "Это часть ___.", h: "Родительный падеж"},
+        {t: "У меня нет ___.", h: "Родительный падеж"}
+    ],
+    // cI: 2 - Дательный (кому? чему?) - "к", "по", "благодаря"
+    2: [
+        {t: "Я иду к ___.", h: "Дательный падеж"},
+        {t: "Я рад ___.", h: "Дательный падеж"},
+        {t: "Благодаря ___ всё хорошо.", h: "Дательный падеж"},
+        {t: "Я звоню ___.", h: "Дательный падеж"}
+    ],
+    // cI: 3 - Винительный (кого? что?) - "вижу", "люблю", "знаю", "в", "на", "за", "через"
+    3: [
+        {t: "Я вижу ___.", h: "Винительный падеж"},
+        {t: "Я люблю ___.", h: "Винительный падеж"},
+        {t: "Я знаю ___.", h: "Винительный падеж"},
+        {t: "Я ищу ___.", h: "Винительный падеж"}
+    ],
+    // cI: 4 - Творительный (кем? чем?) - "с", "за", "перед", "над", "под", "между"
+    4: [
+        {t: "Я горжусь ___.", h: "Творительный падеж"},
+        {t: "Я доволен ___.", h: "Творительный падеж"},
+        {t: "Я восхищаюсь ___.", h: "Творительный падеж"},
+        {t: "Я интересуюсь ___.", h: "Творительный падеж"}
+    ],
+    // cI: 5 - Предложный (о ком? о чём?) - "о/об", "в", "на", "при"
+    5: [
+        {t: "Я думаю о ___.", h: "Предложный падеж"},
+        {t: "Мы говорим о ___.", h: "Предложный падеж"},
+        {t: "Я мечтаю о ___.", h: "Предложный падеж"},
+        {t: "Я читаю о ___.", h: "Предложный падеж"}
+    ]
+};
+let sentScore=0, sentTries=0, currentSentAnswer="";
+
+function genSentence(){
+    // Tasodifiy ot, sifat, padej va son tanlash
+    const wI = Math.floor(Math.random() * DATA.length);
+    const aI = Math.floor(Math.random() * 3);
+    const cI = Math.floor(Math.random() * 6);
+    const pl = Math.random() > 0.5;
+
+    const d = DATA[wI];
+    const [noun, gender, nUz, nUzPl, adjs] = d;
+    const [adj, adjUz, forms] = adjs[aI];
+    const correctForm = forms[pl?1:0][cI];
+
+    // Agar forma mavjud bo'lmasa, qayta generatsiya
+    if(!correctForm || correctForm === "—") { genSentence(); return; }
+
+    currentSentAnswer = correctForm;
+
+    // Shablon tanlash
+    const templates = SENT_TEMPLATES[cI];
+    const tmpl = templates[Math.floor(Math.random() * templates.length)];
+    const numText = pl ? "мн.ч." : "ед.ч.";
+
+    // Gap matnini ko'rsatish
+    document.getElementById("sentText").innerHTML = tmpl.t.replace("___", '<span class="sent-blank">?</span>');
+    document.getElementById("sentHint").innerHTML = `<strong>${adj} ${noun}</strong> — ${tmpl.h}, ${numText}`;
+    document.getElementById("sentRes").style.display = "none";
+
+    // Noto'g'ri variantlar yaratish
+    const opts = [correctForm];
+    const allForms = [];
+
+    // Boshqa padejlardan variantlar (xuddi shu son)
+    for(let c=0; c<6; c++){
+        if(c === cI) continue;
+        const form = forms[pl?1:0][c];
+        if(form && form !== "—" && form !== correctForm && !allForms.includes(form)) allForms.push(form);
+    }
+    // Boshqa sondan variantlar
+    for(let c=0; c<6; c++){
+        const form = forms[pl?0:1][c];
+        if(form && form !== "—" && form !== correctForm && !allForms.includes(form)) allForms.push(form);
+    }
+
+    // Tasodifiy 2 ta noto'g'ri variant tanlash
+    while(opts.length < 3 && allForms.length > 0){
+        const i = Math.floor(Math.random() * allForms.length);
+        opts.push(allForms.splice(i, 1)[0]);
+    }
+
+    // Variantlarni aralashtirish
+    for(let i = opts.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [opts[i], opts[j]] = [opts[j], opts[i]];
+    }
+
+    document.getElementById("sentOptions").innerHTML = opts.map(o =>
+        `<button class="sent-opt" onclick="checkSentence(this,'${o.replace(/'/g,"\\'")}','${correctForm.replace(/'/g,"\\'")}')">${o}</button>`
+    ).join("");
+}
+
+function checkSentence(btn, sel, corr){
+    document.querySelectorAll(".sent-opt").forEach(b => {
+        b.disabled = true;
+        if(b.textContent === corr) b.classList.add("correct");
+    });
+    sentTries++;
+    const res = document.getElementById("sentRes");
+
+    if(sel === corr){
+        sentScore++;
+        btn.classList.add("correct");
+        res.className = "result ok";
+        res.innerHTML = "✅ Тўғри!";
+    } else {
+        btn.classList.add("wrong");
+        res.className = "result no";
+        res.innerHTML = `❌ Тўғри жавоб: <div class="answer">${corr}</div>`;
+    }
+    res.style.display = "block";
+    document.getElementById("sentScore").textContent = sentScore;
+    document.getElementById("sentTries").textContent = sentTries;
+
+    setTimeout(genSentence, 1800);
+}
+
+render();updateStats()
+</script>
+</body>
+</html>
