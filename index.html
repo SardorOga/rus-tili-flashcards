@@ -693,20 +693,38 @@ function genSentence(){
     document.getElementById("sentHint").innerHTML = `<strong>${adj} ${noun}</strong> — ${caseName}, ${numText}`;
     document.getElementById("sentRes").style.display = "none";
 
-    // Noto'g'ri variantlar yaratish
+    // Noto'g'ri variantlar yaratish - faqat shu so'zning boshqa tuslangan shakllari
     const opts = [correctForm];
     const allForms = [];
 
-    // Boshqa padejlardan variantlar (xuddi shu son)
+    // 1. Xuddi shu sifat, boshqa padejlar (xuddi shu son)
     for(let c=0; c<6; c++){
         if(c === cI) continue;
         const form = forms[pl?1:0][c];
         if(form && form !== "—" && form !== correctForm && !allForms.includes(form)) allForms.push(form);
     }
-    // Boshqa sondan variantlar
+    // 2. Xuddi shu sifat, boshqa son
     for(let c=0; c<6; c++){
         const form = forms[pl?0:1][c];
         if(form && form !== "—" && form !== correctForm && !allForms.includes(form)) allForms.push(form);
+    }
+    // 3. Agar kam bo'lsa, boshqa sifatlardan ham olish
+    if(allForms.length < 2){
+        for(let a=0; a<3; a++){
+            if(a === aI) continue;
+            const otherAdj = adjs[a];
+            if(!otherAdj) continue;
+            const otherForms = otherAdj[2];
+            // Xuddi shu padej va son
+            const form = otherForms[pl?1:0][cI];
+            if(form && form !== "—" && form !== correctForm && !allForms.includes(form)) allForms.push(form);
+            // Boshqa padejlar
+            for(let c=0; c<6; c++){
+                if(c === cI) continue;
+                const f = otherForms[pl?1:0][c];
+                if(f && f !== "—" && f !== correctForm && !allForms.includes(f)) allForms.push(f);
+            }
+        }
     }
 
     // Tasodifiy 2 ta noto'g'ri variant tanlash
