@@ -545,6 +545,7 @@
     </div>
 </div>
 <script src="data_150.js"></script>
+<script src="sentences.js"></script>
 <script>
 const CASES=[{ru:"Именительный",q:"кто? что?"},{ru:"Родительный",q:"кого? чего?"},{ru:"Дательный",q:"кому? чему?"},{ru:"Винительный",q:"кого? что?"},{ru:"Творительный",q:"кем? чем?"},{ru:"Предложный",q:"о ком? о чём?"}];
 const UZ_SUFFIX=["","нинг","га","ни"," билан"," ҳақида"];
@@ -669,78 +670,27 @@ document.addEventListener("keydown",e=>{
     }
     if(quizOn&&quizType==="write"&&e.key==="Enter")checkWrite()
 });
-// Har bir padej uchun universal shablon gaplar (grammatik jihatdan to'g'ri)
-const SENT_TEMPLATES = {
-    // cI: 0 - Именительный (кто? что?)
-    0: [
-        {t: "Это ___.", h: "Именительный падеж"},
-        {t: "Вот ___.", h: "Именительный падеж"},
-        {t: "Здесь ___.", h: "Именительный падеж"},
-        {t: "Там ___.", h: "Именительный падеж"}
-    ],
-    // cI: 1 - Родительный (кого? чего?) - "нет", "много", "из", "от", "без", "для", "у"
-    1: [
-        {t: "Здесь нет ___.", h: "Родительный падеж"},
-        {t: "Это цвет ___.", h: "Родительный падеж"},
-        {t: "Это часть ___.", h: "Родительный падеж"},
-        {t: "У меня нет ___.", h: "Родительный падеж"}
-    ],
-    // cI: 2 - Дательный (кому? чему?) - "к", "по", "благодаря"
-    2: [
-        {t: "Я иду к ___.", h: "Дательный падеж"},
-        {t: "Я рад ___.", h: "Дательный падеж"},
-        {t: "Благодаря ___ всё хорошо.", h: "Дательный падеж"},
-        {t: "Я звоню ___.", h: "Дательный падеж"}
-    ],
-    // cI: 3 - Винительный (кого? что?) - "вижу", "люблю", "знаю", "в", "на", "за", "через"
-    3: [
-        {t: "Я вижу ___.", h: "Винительный падеж"},
-        {t: "Я люблю ___.", h: "Винительный падеж"},
-        {t: "Я знаю ___.", h: "Винительный падеж"},
-        {t: "Я ищу ___.", h: "Винительный падеж"}
-    ],
-    // cI: 4 - Творительный (кем? чем?) - "с", "за", "перед", "над", "под", "между"
-    4: [
-        {t: "Я горжусь ___.", h: "Творительный падеж"},
-        {t: "Я доволен ___.", h: "Творительный падеж"},
-        {t: "Я восхищаюсь ___.", h: "Творительный падеж"},
-        {t: "Я интересуюсь ___.", h: "Творительный падеж"}
-    ],
-    // cI: 5 - Предложный (о ком? о чём?) - "о/об", "в", "на", "при"
-    5: [
-        {t: "Я думаю о ___.", h: "Предложный падеж"},
-        {t: "Мы говорим о ___.", h: "Предложный падеж"},
-        {t: "Я мечтаю о ___.", h: "Предложный падеж"},
-        {t: "Я читаю о ___.", h: "Предложный падеж"}
-    ]
-};
 let sentScore=0, sentTries=0, currentSentAnswer="";
 
 function genSentence(){
-    // Tasodifiy ot, sifat, padej va son tanlash
-    const wI = Math.floor(Math.random() * DATA.length);
-    const aI = Math.floor(Math.random() * 3);
-    const cI = Math.floor(Math.random() * 6);
-    const pl = Math.random() > 0.5;
+    // SENTENCES massividan tasodifiy gap tanlash
+    const sentIdx = Math.floor(Math.random() * SENTENCES.length);
+    const sent = SENTENCES[sentIdx];
+    const {wI, aI, cI, pl, sentence, answer} = sent;
 
     const d = DATA[wI];
     const [noun, gender, nUz, nUzPl, adjs] = d;
     const [adj, adjUz, forms] = adjs[aI];
-    const correctForm = forms[pl?1:0][cI];
-
-    // Agar forma mavjud bo'lmasa, qayta generatsiya
-    if(!correctForm || correctForm === "—") { genSentence(); return; }
+    const correctForm = answer;
 
     currentSentAnswer = correctForm;
 
-    // Shablon tanlash
-    const templates = SENT_TEMPLATES[cI];
-    const tmpl = templates[Math.floor(Math.random() * templates.length)];
+    const caseName = CASES[cI].ru;
     const numText = pl ? "мн.ч." : "ед.ч.";
 
     // Gap matnini ko'rsatish
-    document.getElementById("sentText").innerHTML = tmpl.t.replace("___", '<span class="sent-blank">?</span>');
-    document.getElementById("sentHint").innerHTML = `<strong>${adj} ${noun}</strong> — ${tmpl.h}, ${numText}`;
+    document.getElementById("sentText").innerHTML = sentence.replace("___", '<span class="sent-blank">?</span>');
+    document.getElementById("sentHint").innerHTML = `<strong>${adj} ${noun}</strong> — ${caseName}, ${numText}`;
     document.getElementById("sentRes").style.display = "none";
 
     // Noto'g'ri variantlar yaratish
