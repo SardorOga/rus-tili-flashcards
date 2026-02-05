@@ -707,6 +707,140 @@
             .gram-table th, .gram-table td { padding: 8px 5px; }
         }
 
+        /* Mashq Section */
+        .mashq-section { display: none; }
+        .mashq-section.active { display: block; }
+        .mashq-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; justify-content: center; }
+        .mashq-tab {
+            padding: 10px 16px; border: 1px solid var(--border); border-radius: 12px;
+            background: var(--bg-card); color: var(--text-2); font-family: inherit;
+            font-size: 0.85em; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+        }
+        .mashq-tab:hover { border-color: var(--accent-1); color: var(--text-1); }
+        .mashq-tab.active { background: linear-gradient(135deg, #2c5f2d, #2c5f2dcc); border-color: transparent; color: #fff; }
+        .mashq-card {
+            background: #1e1e2e; border: 1px solid var(--border); border-radius: 20px;
+            padding: 24px; margin-bottom: 20px;
+        }
+        .mashq-card h3 { color: var(--accent-1); font-size: 1.15em; margin-bottom: 16px; font-weight: 600; }
+        .mashq-rule-table {
+            width: 100%; border-collapse: collapse; margin: 16px 0;
+            border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        }
+        .mashq-rule-table th {
+            padding: 12px 10px; text-align: left; font-weight: 600; font-size: 0.85em;
+            background: #2c5f2d; color: white;
+        }
+        .mashq-rule-table td {
+            padding: 10px; border: 1px solid rgba(255,255,255,0.06); vertical-align: top;
+            font-size: 0.9em; line-height: 1.6; color: var(--text-2);
+        }
+        .mashq-rule-table td strong { color: var(--text-1); }
+        .mashq-rule-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+        .mashq-mnemonic {
+            background: rgba(251,192,45,0.08); padding: 16px 20px; border-radius: 12px;
+            margin: 16px 0; border-left: 4px solid #fbc02d; color: var(--text-1);
+            font-size: 1.1em; font-weight: 600; text-align: center; letter-spacing: 0.5px;
+        }
+        .mashq-skl-box {
+            background: #262640; padding: 14px 16px; border-radius: 12px; margin-bottom: 10px;
+        }
+        .mashq-skl-title { color: var(--text-1); font-weight: 600; margin-bottom: 6px; }
+        .mashq-skl-desc { color: var(--text-3); font-size: 0.9em; }
+        .mashq-skl-examples { color: var(--text-2); font-size: 0.88em; margin-top: 4px; }
+        .mashq-word-display {
+            text-align: center; padding: 20px; background: linear-gradient(135deg, #2c5f2d, #2c5f2dcc);
+            border-radius: 16px; margin-bottom: 20px;
+        }
+        .mashq-word-big { font-size: 2em; font-weight: 700; color: white; }
+        .mashq-word-info { color: rgba(255,255,255,0.8); font-size: 0.9em; margin-top: 4px; }
+        .mashq-input-row {
+            display: grid; grid-template-columns: 160px 100px 1fr; gap: 10px;
+            align-items: center; margin-bottom: 8px; padding: 8px 12px;
+            background: #262640; border-radius: 10px;
+        }
+        .mashq-input-row .case-name { color: var(--text-1); font-weight: 600; font-size: 0.9em; }
+        .mashq-input-row .helper-word { color: var(--text-3); font-size: 0.85em; font-style: italic; }
+        .mashq-input-row input {
+            padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px;
+            background: var(--bg-primary); color: var(--text-1); font-family: inherit;
+            font-size: 0.95em; outline: none; transition: border-color 0.2s;
+        }
+        .mashq-input-row input:focus { border-color: var(--accent-1); }
+        .mashq-input-row input.correct { border-color: var(--success); background: rgba(34,197,94,0.1); }
+        .mashq-input-row input.wrong { border-color: var(--danger); background: rgba(239,68,68,0.1); }
+        .mashq-input-row .answer-show { font-size: 0.85em; margin-top: 2px; color: var(--success); }
+        .mashq-btn {
+            padding: 12px 24px; border: none; border-radius: 12px;
+            background: linear-gradient(135deg, #2c5f2d, #2c5f2dcc); color: white;
+            font-family: inherit; font-size: 0.95em; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; margin: 8px 4px;
+        }
+        .mashq-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(44,95,45,0.3); }
+        .mashq-btn.secondary {
+            background: var(--bg-card); color: var(--text-2); border: 1px solid var(--border);
+        }
+        .mashq-score {
+            text-align: center; padding: 12px; color: var(--text-2); font-size: 0.9em;
+        }
+        .mashq-score strong { color: var(--success); }
+        .mashq-sentence-display {
+            text-align: center; padding: 24px; background: #262640; border-radius: 16px;
+            margin-bottom: 20px; font-size: 1.2em; line-height: 1.8; color: var(--text-1);
+        }
+        .mashq-sentence-display .hl-word {
+            background: rgba(251,192,45,0.2); padding: 2px 8px; border-radius: 6px;
+            color: #fbc02d; font-weight: 600; border-bottom: 2px solid #fbc02d;
+        }
+        .mashq-case-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; max-width: 500px; margin: 0 auto; }
+        .mashq-case-btn {
+            padding: 14px 10px; border: 1px solid var(--border); border-radius: 12px;
+            background: var(--bg-card); color: var(--text-2); font-family: inherit;
+            font-size: 0.85em; cursor: pointer; transition: all 0.2s; text-align: center;
+        }
+        .mashq-case-btn:hover { border-color: var(--accent-1); color: var(--text-1); }
+        .mashq-case-btn.correct { background: rgba(34,197,94,0.15); border-color: var(--success); color: var(--success); }
+        .mashq-case-btn.wrong { background: rgba(239,68,68,0.15); border-color: var(--danger); color: var(--danger); }
+        .mashq-explanation {
+            text-align: center; padding: 12px; margin-top: 12px; border-radius: 10px;
+            background: rgba(34,197,94,0.08); color: var(--text-2); font-size: 0.9em;
+            border-left: 3px solid var(--success);
+        }
+        .mashq-detail-box {
+            background: #1e1e2e; border: 1px solid var(--border); border-radius: 14px;
+            padding: 16px 18px; margin-top: 16px; text-align: left;
+        }
+        .mashq-detail-title { color: var(--text-1); font-weight: 600; margin-bottom: 8px; }
+        .mashq-detail-wrong {
+            background: rgba(239,68,68,0.1); padding: 10px 14px; border-radius: 8px;
+            margin-bottom: 8px; color: var(--danger); font-size: 0.9em;
+            border-left: 3px solid var(--danger);
+        }
+        .mashq-detail-correct {
+            background: rgba(34,197,94,0.1); padding: 10px 14px; border-radius: 8px;
+            margin-bottom: 8px; color: var(--success); font-size: 0.9em;
+            border-left: 3px solid var(--success);
+        }
+        .mashq-detail-hint {
+            background: rgba(251,192,45,0.08); padding: 10px 14px; border-radius: 8px;
+            color: var(--text-2); font-size: 0.88em; line-height: 1.7;
+            border-left: 3px solid #fbc02d;
+        }
+        .mashq-options { display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto; }
+        .mashq-option {
+            padding: 14px 18px; border: 1px solid var(--border); border-radius: 12px;
+            background: var(--bg-card); color: var(--text-1); font-family: inherit;
+            font-size: 1em; cursor: pointer; transition: all 0.2s; text-align: center;
+        }
+        .mashq-option:hover { border-color: var(--accent-1); background: var(--bg-elevated); }
+        .mashq-option.correct { background: rgba(34,197,94,0.15); border-color: var(--success); color: var(--success); }
+        .mashq-option.wrong { background: rgba(239,68,68,0.15); border-color: var(--danger); color: var(--danger); }
+        @media (max-width: 700px) {
+            .mashq-input-row { grid-template-columns: 1fr; }
+            .mashq-case-btns { grid-template-columns: 1fr 1fr; }
+            .mashq-word-big { font-size: 1.5em; }
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
@@ -733,6 +867,7 @@
     <button class="nav-btn" onclick="mode('list')">📋 Рўйхат</button>
     <button class="nav-btn" onclick="mode('verbs')">🔤 Феълар</button>
     <button class="nav-btn" onclick="mode('grammar')">📗 Грамматика</button>
+    <button class="nav-btn" onclick="mode('mashq')">🎓 Машқлар</button>
     <button class="nav-btn" onclick="markDone()">✅ Ўргандим</button>
     <button class="nav-btn" onclick="shuffle()">🔀 Аралаш</button>
 </div>
@@ -846,12 +981,17 @@
             </div>
         </div>
     </div>
+    <div class="mashq-section" id="mashq">
+        <div class="mashq-tabs" id="mashqTabs"></div>
+        <div id="mashqContent"></div>
+    </div>
 </div>
 <script src="data_150.js?v=3"></script>
 <script src="sentences.js?v=3"></script>
 <script src="verbs.js?v=1"></script>
 <script src="verb_sentences.js?v=1"></script>
 <script src="grammatika.js?v=1"></script>
+<script src="padej_mashq.js?v=1"></script>
 <script>
 const CASES=[{ru:"Именительный",q:"кто? что?"},{ru:"Родительный",q:"кого? чего?"},{ru:"Дательный",q:"кому? чему?"},{ru:"Винительный",q:"кого? что?"},{ru:"Творительный",q:"кем? чем?"},{ru:"Предложный",q:"о ком? о чём?"}];
 const UZ_SUFFIX=["","нинг","га","ни"," билан"," ҳақида"];
@@ -880,7 +1020,7 @@ function markDone(){learned.add(wordOrder[wordIdx]);updateStats();if(wordIdx<DAT
 function shuffle(){for(let i=wordOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[wordOrder[i],wordOrder[j]]=[wordOrder[j],wordOrder[i]]}wordIdx=0;adjIdx=0;render()}
 function updateStats(){document.getElementById("done").textContent=learned.size;document.getElementById("score").textContent=score;document.getElementById("tries").textContent=tries;document.getElementById("total").textContent=DATA.length;document.getElementById("prog").style.width=(learned.size/DATA.length*100)+"%"}
 function mode(m){
-    const modeIdx = {learn:0, quiz:1, sentences:2, list:3, verbs:4, grammar:5};
+    const modeIdx = {learn:0, quiz:1, sentences:2, list:3, verbs:4, grammar:5, mashq:6};
     document.querySelectorAll(".nav-btn").forEach((b,i)=>b.classList.toggle("active",i===modeIdx[m]));
     document.getElementById("learn").style.display=m==="learn"?"block":"none";
     document.getElementById("quiz").classList.toggle("active",m==="quiz");
@@ -888,7 +1028,8 @@ function mode(m){
     document.getElementById("list").classList.toggle("active",m==="list");
     document.getElementById("verbs").classList.toggle("active",m==="verbs");
     document.getElementById("grammar").classList.toggle("active",m==="grammar");
-    if(m==="quiz")genQ();if(m==="sentences")genSentence();if(m==="list")renderList();if(m==="verbs")renderVerb();if(m==="grammar")renderGrammar();
+    document.getElementById("mashq").classList.toggle("active",m==="mashq");
+    if(m==="quiz")genQ();if(m==="sentences")genSentence();if(m==="list")renderList();if(m==="verbs")renderVerb();if(m==="grammar")renderGrammar();if(m==="mashq")renderMashq();
 }
 function setQuizType(t){
     quizType=t;
@@ -1654,6 +1795,319 @@ function renderGramCase() {
 
 function prevCase() { if (currentCaseIdx > 0) setGramCase(currentCaseIdx - 1); }
 function nextCase() { if (currentCaseIdx < GRAMMAR_CASES.length - 1) setGramCase(currentCaseIdx + 1); }
+
+// ========== MASHQ SECTION ==========
+let mashqTab = 'rules';
+let mashqDeclScore = {correct: 0, total: 0};
+let mashqIdentScore = {correct: 0, total: 0};
+let mashqFormScore = {correct: 0, total: 0};
+let mashqCurrentWord = null;
+let mashqCurrentSentence = null;
+let mashqFormWord = null;
+let mashqFormTargetCase = -1;
+
+function buildMiniDeclTable(w) {
+    let t = `<table class="mashq-rule-table" style="margin-top:12px"><thead><tr>
+        <th>Падеж</th><th>Ёрдамчи сўз</th><th>Бирлик</th><th>Кўплик</th>
+    </tr></thead><tbody>`;
+    PADEJ_NAMES.forEach((p, i) => {
+        t += `<tr><td><strong>${p.name}</strong></td><td>${p.helper}</td><td><strong>${w.sg[i]}</strong></td><td>${w.pl[i]}</td></tr>`;
+    });
+    t += `</tbody></table>`;
+    return t;
+}
+
+function renderMashq() {
+    const tabs = [
+        {id: 'rules', label: 'Қоида'},
+        {id: 'decline', label: 'Туслаш'},
+        {id: 'identify', label: 'Аниқла'},
+        {id: 'form', label: 'Тўғри шакл'}
+    ];
+    let h = '';
+    tabs.forEach(t => {
+        h += `<button class="mashq-tab${t.id === mashqTab ? ' active' : ''}" onclick="setMashqTab('${t.id}')">${t.label}</button>`;
+    });
+    document.getElementById('mashqTabs').innerHTML = h;
+    renderMashqContent();
+}
+
+function setMashqTab(tab) {
+    mashqTab = tab;
+    document.querySelectorAll('.mashq-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    renderMashqContent();
+}
+
+function renderMashqContent() {
+    let h = '';
+    if (mashqTab === 'rules') h = renderMashqRules();
+    else if (mashqTab === 'decline') h = renderMashqDecline();
+    else if (mashqTab === 'identify') h = renderMashqIdentify();
+    else if (mashqTab === 'form') h = renderMashqForm();
+    document.getElementById('mashqContent').innerHTML = h;
+}
+
+function renderMashqRules() {
+    let h = '';
+    // Mnemonic
+    h += `<div class="mashq-card">
+        <h3>Падежларни эслаш учун</h3>
+        <div class="mashq-mnemonic">Иван Родил Девчонку, Велел Тащить Пелёнку</div>
+        <div style="text-align:center;color:var(--text-3);font-size:0.85em;margin-top:8px">
+            <strong>И</strong>менительный, <strong>Р</strong>одительный, <strong>Д</strong>ательный, <strong>В</strong>инительный, <strong>Т</strong>ворительный, <strong>П</strong>редложный
+        </div>
+    </div>`;
+
+    // Helper words table
+    h += `<div class="mashq-card">
+        <h3>Ёрдамчи сўзлар жадвали</h3>
+        <table class="mashq-rule-table"><thead><tr>
+            <th>Падеж</th><th>Ўзбекча</th><th>Ёрдамчи сўз</th><th>Савол</th>
+        </tr></thead><tbody>`;
+    PADEJ_NAMES.forEach(p => {
+        h += `<tr><td><strong>${p.name}</strong></td><td>${p.nameUz}</td><td><strong>${p.helper}</strong></td><td>${p.question}</td></tr>`;
+    });
+    h += `</tbody></table>
+        <div style="color:var(--text-3);font-size:0.85em;margin-top:12px;padding:0 8px">
+            Масалан: <strong>стол</strong> → есть <em>стол</em>, нет <em>стола</em>, дать <em>столу</em>, вижу <em>стол</em>, горжусь <em>столом</em>, думаю о <em>столе</em>
+        </div>
+    </div>`;
+
+    // 3 declension types
+    h += `<div class="mashq-card">
+        <h3>3 та турланиш (склонение)</h3>
+        <div class="mashq-skl-box">
+            <div class="mashq-skl-title">1-склонение</div>
+            <div class="mashq-skl-desc">Аёл ва эркак отлар: <strong>-а, -я</strong> билан тугайди</div>
+            <div class="mashq-skl-examples">мам<strong>а</strong>, книг<strong>а</strong>, школ<strong>а</strong>, пап<strong>а</strong>, земл<strong>я</strong>, семь<strong>я</strong></div>
+        </div>
+        <div class="mashq-skl-box">
+            <div class="mashq-skl-title">2-склонение</div>
+            <div class="mashq-skl-desc">Эркак отлар (қўшимчасиз) ва ўрта жинс: <strong>-о, -е</strong></div>
+            <div class="mashq-skl-examples">стол, дом, друг, город, окн<strong>о</strong>, мор<strong>е</strong>, письм<strong>о</strong></div>
+        </div>
+        <div class="mashq-skl-box">
+            <div class="mashq-skl-title">3-склонение</div>
+            <div class="mashq-skl-desc">Аёл отлар: <strong>-ь</strong> билан тугайди</div>
+            <div class="mashq-skl-examples">ноч<strong>ь</strong>, тетрад<strong>ь</strong>, жизн<strong>ь</strong>, доч<strong>ь</strong>, двер<strong>ь</strong>, площад<strong>ь</strong></div>
+        </div>
+    </div>`;
+
+    return h;
+}
+
+function renderMashqDecline() {
+    mashqCurrentWord = MASHQ_WORDS[Math.floor(Math.random() * MASHQ_WORDS.length)];
+    const w = mashqCurrentWord;
+    let h = '';
+    h += `<div class="mashq-word-display">
+        <div class="mashq-word-big">${w.word}</div>
+        <div class="mashq-word-info">${w.wordUz} • ${w.gender} • ${w.skl}-склонение</div>
+    </div>`;
+    h += `<div class="mashq-card"><h3>Бирлик (ед.ч.) шаклларини ёзинг</h3>`;
+    PADEJ_NAMES.forEach((p, i) => {
+        h += `<div class="mashq-input-row">
+            <span class="case-name">${p.name}</span>
+            <span class="helper-word">${p.helper}...</span>
+            <div><input type="text" id="declInput${i}" placeholder="${p.question}" autocomplete="off"${i===0 ? ' value="'+w.word+'" disabled style="opacity:0.6"' : ''}></div>
+        </div>`;
+    });
+    h += `<div style="text-align:center;margin-top:16px">
+        <button class="mashq-btn" onclick="checkMashqDecline()">Текшириш</button>
+        <button class="mashq-btn secondary" onclick="renderMashqContent()">Бошқа сўз</button>
+    </div>`;
+    h += `<div class="mashq-score">Натижа: <strong>${mashqDeclScore.correct}</strong> / ${mashqDeclScore.total}</div>`;
+    h += `</div>`;
+    return h;
+}
+
+function checkMashqDecline() {
+    const w = mashqCurrentWord;
+    let allCorrect = true;
+    for (let i = 1; i < 6; i++) {
+        const input = document.getElementById('declInput' + i);
+        const correct = w.sg[i].toLowerCase();
+        const answer = input.value.trim().toLowerCase();
+        if (answer === correct) {
+            input.classList.add('correct');
+            input.classList.remove('wrong');
+        } else {
+            input.classList.add('wrong');
+            input.classList.remove('correct');
+            allCorrect = false;
+            let show = input.parentElement.querySelector('.answer-show');
+            if (!show) {
+                show = document.createElement('div');
+                show.className = 'answer-show';
+                input.parentElement.appendChild(show);
+            }
+            show.textContent = '→ ' + w.sg[i];
+        }
+        input.disabled = true;
+    }
+    mashqDeclScore.total++;
+    if (allCorrect) mashqDeclScore.correct++;
+    document.querySelector('.mashq-score').innerHTML = 'Натижа: <strong>' + mashqDeclScore.correct + '</strong> / ' + mashqDeclScore.total;
+    // Show full table if wrong + next button; auto-advance if correct
+    const btnsDiv = document.querySelector('.mashq-card > div[style*="text-align:center"]');
+    if (allCorrect) {
+        btnsDiv.innerHTML = '<div style="color:var(--success);font-weight:600;font-size:1.1em;margin:8px 0">Баракалла! Ҳаммаси тўғри!</div>';
+        setTimeout(renderMashqContent, 3000);
+    } else {
+        btnsDiv.innerHTML = `<div class="mashq-detail-box">
+            <div class="mashq-detail-title">Тўғри жавоблар:</div>
+            ${buildMiniDeclTable(w)}
+        </div>
+        <button class="mashq-btn" onclick="renderMashqContent()" style="margin-top:16px">Кейингиси →</button>`;
+    }
+}
+
+function renderMashqIdentify() {
+    mashqCurrentSentence = PADEJ_SENTENCES[Math.floor(Math.random() * PADEJ_SENTENCES.length)];
+    const s = mashqCurrentSentence;
+    const display = s.sentence.replace(/___(.+?)___/g, '<span class="hl-word">$1</span>');
+    let h = '';
+    h += `<div class="mashq-sentence-display">${display}</div>`;
+    h += `<div style="text-align:center;color:var(--text-3);margin-bottom:16px">Белгиланган сўзнинг падежини аниқланг</div>`;
+    h += `<div class="mashq-case-btns">`;
+    PADEJ_NAMES.forEach((p, i) => {
+        h += `<button class="mashq-case-btn" onclick="checkMashqIdentify(this,${i})">${p.name}<br><small>${p.question}</small></button>`;
+    });
+    h += `</div>`;
+    h += `<div id="mashqIdentExplain"></div>`;
+    h += `<div class="mashq-score">Натижа: <strong>${mashqIdentScore.correct}</strong> / ${mashqIdentScore.total}</div>`;
+    return h;
+}
+
+function checkMashqIdentify(btn, idx) {
+    const s = mashqCurrentSentence;
+    const correct = s.caseIdx;
+    const isCorrect = idx === correct;
+    document.querySelectorAll('.mashq-case-btn').forEach((b, i) => {
+        b.disabled = true;
+        if (i === correct) b.classList.add('correct');
+    });
+    mashqIdentScore.total++;
+    if (isCorrect) {
+        mashqIdentScore.correct++;
+    } else {
+        btn.classList.add('wrong');
+    }
+    let explain = `<div class="mashq-explanation">${s.explanation}</div>`;
+    if (!isCorrect) {
+        const wrongP = PADEJ_NAMES[idx];
+        const correctP = PADEJ_NAMES[correct];
+        explain += `<div class="mashq-detail-box">
+            <div class="mashq-detail-wrong">Сиз танладингиз: <strong>${wrongP.name}</strong> (${wrongP.helper}... ${wrongP.question})</div>
+            <div class="mashq-detail-correct">Тўғри жавоб: <strong>${correctP.name}</strong> (${correctP.helper}... ${correctP.question})</div>
+            <div class="mashq-detail-hint">
+                <strong>Фарқи:</strong><br>
+                ${correctP.name}: <em>${correctP.helper}</em> → ${correctP.question}<br>
+                ${wrongP.name}: <em>${wrongP.helper}</em> → ${wrongP.question}
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:16px"><button class="mashq-btn" onclick="renderMashqContent()">Кейингиси →</button></div>`;
+    }
+    document.getElementById('mashqIdentExplain').innerHTML = explain;
+    document.querySelector('.mashq-score').innerHTML = 'Натижа: <strong>' + mashqIdentScore.correct + '</strong> / ' + mashqIdentScore.total;
+    if (isCorrect) setTimeout(renderMashqContent, 3000);
+}
+
+function renderMashqForm() {
+    const w = MASHQ_WORDS[Math.floor(Math.random() * MASHQ_WORDS.length)];
+    const targetCase = Math.floor(Math.random() * 5) + 1; // skip Именительный
+    mashqFormWord = w;
+    mashqFormTargetCase = targetCase;
+    const correctForm = w.sg[targetCase];
+    const pName = PADEJ_NAMES[targetCase];
+
+    // Generate wrong options from other cases
+    const options = [correctForm];
+    const otherForms = w.sg.filter((f, i) => i !== targetCase && i !== 0 && f !== correctForm);
+    while (options.length < 4 && otherForms.length > 0) {
+        const ri = Math.floor(Math.random() * otherForms.length);
+        options.push(otherForms.splice(ri, 1)[0]);
+    }
+    // If still not enough, add plural forms
+    if (options.length < 4) {
+        const plForms = w.pl.filter(f => !options.includes(f));
+        while (options.length < 4 && plForms.length > 0) {
+            const ri = Math.floor(Math.random() * plForms.length);
+            options.push(plForms.splice(ri, 1)[0]);
+        }
+    }
+    // Shuffle
+    for (let i = options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [options[i], options[j]] = [options[j], options[i]];
+    }
+
+    let h = '';
+    h += `<div class="mashq-card">
+        <div class="mashq-word-display">
+            <div class="mashq-word-big">${w.word}</div>
+            <div class="mashq-word-info">${w.wordUz} • ${w.gender}</div>
+        </div>
+        <div style="text-align:center;margin-bottom:20px">
+            <div style="color:var(--text-1);font-size:1.1em;font-weight:600">${pName.name} падеж</div>
+            <div style="color:var(--text-3);font-size:0.9em">${pName.helper}... ${pName.question}</div>
+        </div>
+        <div class="mashq-options">`;
+    options.forEach(opt => {
+        h += `<button class="mashq-option" onclick="checkMashqForm(this,'${opt.replace(/'/g,"\\'")}','${correctForm.replace(/'/g,"\\'")}')">${opt}</button>`;
+    });
+    h += `</div>
+        <div id="mashqFormExplain"></div>
+        <div class="mashq-score">Натижа: <strong>${mashqFormScore.correct}</strong> / ${mashqFormScore.total}</div>
+    </div>`;
+    return h;
+}
+
+function checkMashqForm(btn, selected, correct) {
+    const isCorrect = selected === correct;
+    document.querySelectorAll('.mashq-option').forEach(b => {
+        b.disabled = true;
+        if (b.textContent === correct) b.classList.add('correct');
+    });
+    mashqFormScore.total++;
+    if (isCorrect) {
+        mashqFormScore.correct++;
+    } else {
+        btn.classList.add('wrong');
+    }
+    document.querySelector('.mashq-score').innerHTML = 'Натижа: <strong>' + mashqFormScore.correct + '</strong> / ' + mashqFormScore.total;
+    if (!isCorrect) {
+        const w = mashqFormWord;
+        const correctP = PADEJ_NAMES[mashqFormTargetCase];
+        // Find which case the selected (wrong) form belongs to
+        let selectedCaseInfo = '';
+        for (let i = 0; i < 6; i++) {
+            if (w.sg[i].toLowerCase() === selected.toLowerCase()) {
+                selectedCaseInfo = `Сиз танлаган "<strong>${selected}</strong>" — бу <strong>${PADEJ_NAMES[i].name}</strong> (${PADEJ_NAMES[i].helper}... ${PADEJ_NAMES[i].question})`;
+                break;
+            }
+        }
+        if (!selectedCaseInfo) {
+            for (let i = 0; i < 6; i++) {
+                if (w.pl[i].toLowerCase() === selected.toLowerCase()) {
+                    selectedCaseInfo = `Сиз танлаган "<strong>${selected}</strong>" — бу <strong>${PADEJ_NAMES[i].name}</strong> кўплик шакли`;
+                    break;
+                }
+            }
+        }
+        let explain = `<div class="mashq-detail-box">
+            <div class="mashq-detail-wrong">${selectedCaseInfo || 'Нотўғри жавоб: <strong>' + selected + '</strong>'}</div>
+            <div class="mashq-detail-correct">Тўғри жавоб: <strong>${correct}</strong> — ${correctP.name} (${correctP.helper}... ${correctP.question})</div>
+            <div class="mashq-detail-title" style="margin-top:12px">"${w.word}" сўзининг барча шакллари:</div>
+            ${buildMiniDeclTable(w)}
+        </div>
+        <div style="text-align:center;margin-top:16px"><button class="mashq-btn" onclick="renderMashqContent()">Кейингиси →</button></div>`;
+        document.getElementById('mashqFormExplain').innerHTML = explain;
+    } else {
+        setTimeout(renderMashqContent, 3000);
+    }
+}
 
 render();updateStats()
 </script>
