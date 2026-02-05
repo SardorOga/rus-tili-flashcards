@@ -590,7 +590,7 @@
 
         /* Grammar Section */
         .grammar-section { display: none; }
-        .grammar-section.active { display: block; }
+        .grammar-section.active { display: flex; gap: 24px; align-items: flex-start; }
         .grammar-tabs {
             display: flex;
             justify-content: center;
@@ -617,13 +617,43 @@
             border-color: transparent;
             color: #fff;
         }
+        .gram-sidebar {
+            width: 180px;
+            min-width: 180px;
+            position: sticky;
+            top: 80px;
+            background: #1e1e2e;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .gram-sidebar-link {
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: var(--text-3);
+            font-size: 0.82em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            font-family: inherit;
+            text-align: left;
+            white-space: nowrap;
+        }
+        .gram-sidebar-link:hover { color: var(--text-1); background: rgba(99,102,241,0.1); }
+        .gram-sidebar-link.active { color: var(--accent-1); background: rgba(99,102,241,0.15); font-weight: 600; }
+        .gram-main { flex: 1; min-width: 0; }
         .gram-header {
-            background: var(--bg-card);
+            background: #1e1e2e;
             border: 1px solid var(--border);
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 20px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 60px var(--glow);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2), 0 0 40px var(--glow);
         }
         .gram-header-top {
             padding: 28px 24px;
@@ -657,7 +687,7 @@
         }
         .gram-header-body { padding: 24px; }
         .gram-explanation {
-            background: var(--bg-elevated);
+            background: #262640;
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 20px;
@@ -675,7 +705,7 @@
         }
         .gram-explanation .uz-text { color: var(--success); }
         .gram-section {
-            background: var(--bg-card);
+            background: #1e1e2e;
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 24px;
@@ -689,7 +719,7 @@
             text-align: center;
         }
         .use-case-item {
-            background: var(--bg-elevated);
+            background: #262640;
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 18px;
@@ -700,7 +730,7 @@
         .use-case-title { font-weight: 600; margin-bottom: 6px; color: var(--text-1); }
         .use-case-title-uz { color: var(--success); font-size: 0.9em; margin-bottom: 10px; }
         .use-case-example {
-            background: var(--bg-secondary);
+            background: #1a1a2e;
             border-left: 3px solid var(--accent-1);
             padding: 12px 16px;
             border-radius: 0 8px 8px 0;
@@ -713,7 +743,7 @@
             grid-template-columns: 100px 1fr 1fr;
             gap: 10px;
             padding: 14px;
-            background: var(--bg-elevated);
+            background: #262640;
             border: 1px solid var(--border);
             border-radius: 14px;
             margin-bottom: 10px;
@@ -729,7 +759,7 @@
             font-size: 0.9em;
         }
         .ending-cell {
-            background: var(--bg-secondary);
+            background: #1a1a2e;
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 12px;
@@ -746,7 +776,7 @@
             gap: 14px;
         }
         .example-card {
-            background: var(--bg-elevated);
+            background: #262640;
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 16px;
@@ -757,7 +787,7 @@
         .example-card .hl { color: var(--accent-1); font-weight: 700; background: rgba(99,102,241,0.15); padding: 1px 5px; border-radius: 4px; }
         .example-card .uz { color: var(--success); font-size: 0.9em; }
         .mistake-item {
-            background: var(--bg-elevated);
+            background: #262640;
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 18px;
@@ -802,6 +832,10 @@
         }
         .gram-nav-btn:hover { border-color: var(--accent-1); color: var(--text-1); background: var(--bg-elevated); }
         .gram-nav-btn:disabled { opacity: 0.3; cursor: default; }
+        @media (max-width: 900px) {
+            .grammar-section.active { display: block; }
+            .gram-sidebar { display: none; }
+        }
         @media (max-width: 700px) {
             .ending-row { grid-template-columns: 1fr; text-align: center; }
             .ending-gender { justify-content: center; }
@@ -940,11 +974,14 @@
         </div>
     </div>
     <div class="grammar-section" id="grammar">
-        <div class="grammar-tabs" id="gramTabs"></div>
-        <div id="gramContent"></div>
-        <div class="gram-nav">
-            <button class="gram-nav-btn" id="gramPrev" onclick="prevCase()">← Олдинги</button>
-            <button class="gram-nav-btn" id="gramNext" onclick="nextCase()">Кейинги →</button>
+        <div class="gram-sidebar" id="gramSidebar"></div>
+        <div class="gram-main">
+            <div class="grammar-tabs" id="gramTabs"></div>
+            <div id="gramContent"></div>
+            <div class="gram-nav">
+                <button class="gram-nav-btn" id="gramPrev" onclick="prevCase()">← Олдинги</button>
+                <button class="gram-nav-btn" id="gramNext" onclick="nextCase()">Кейинги →</button>
+            </div>
         </div>
     </div>
 </div>
@@ -1556,14 +1593,53 @@ document.addEventListener('keydown', e => {
 // ========== GRAMMAR SECTION ==========
 let currentCaseIdx = 0;
 
+const GRAM_SECTIONS = [
+    { id: 'gramExplain', label: 'Тушунтириш' },
+    { id: 'gramWhen', label: 'Қачон ишлатамиз?' },
+    { id: 'gramNounEnd', label: 'От қўшимчалари' },
+    { id: 'gramAdjEnd', label: 'Сифат қўшимчалари' },
+    { id: 'gramExamples', label: 'Мисоллар' },
+    { id: 'gramMistakes', label: 'Хатолар' }
+];
+let gramObserver = null;
+
 function renderGrammar() {
-    // Build tabs
     let tabs = '';
     GRAMMAR_CASES.forEach((c, i) => {
         tabs += `<button class="gram-tab${i === currentCaseIdx ? ' active' : ''}" onclick="setGramCase(${i})">${c.id}. ${c.name.slice(0, 3)}.</button>`;
     });
     document.getElementById('gramTabs').innerHTML = tabs;
+    renderGramSidebar();
     renderGramCase();
+}
+
+function renderGramSidebar() {
+    let h = '';
+    GRAM_SECTIONS.forEach((s, i) => {
+        h += `<button class="gram-sidebar-link${i === 0 ? ' active' : ''}" data-target="${s.id}" onclick="scrollToGramSection('${s.id}')">${s.label}</button>`;
+    });
+    document.getElementById('gramSidebar').innerHTML = h;
+}
+
+function scrollToGramSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setupGramObserver() {
+    if (gramObserver) gramObserver.disconnect();
+    const sections = GRAM_SECTIONS.map(s => document.getElementById(s.id)).filter(Boolean);
+    if (!sections.length) return;
+    gramObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                document.querySelectorAll('.gram-sidebar-link').forEach(link => {
+                    link.classList.toggle('active', link.dataset.target === entry.target.id);
+                });
+            }
+        });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0.1 });
+    sections.forEach(s => gramObserver.observe(s));
 }
 
 function setGramCase(idx) {
@@ -1579,7 +1655,7 @@ function renderGramCase() {
     let h = '';
 
     // Header
-    h += `<div class="gram-header">
+    h += `<div class="gram-header" id="gramExplain">
         <div class="gram-header-top" style="background:linear-gradient(135deg,${c.color},${c.color}cc)">
             <div class="gram-case-name">${c.id}. ${c.name} падеж</div>
             <div class="gram-case-question">${c.question}</div>
@@ -1595,7 +1671,7 @@ function renderGramCase() {
     </div>`;
 
     // When to use
-    h += `<div class="gram-section"><h3>Қачон ишлатамиз?</h3>`;
+    h += `<div class="gram-section" id="gramWhen"><h3>Қачон ишлатамиз?</h3>`;
     c.whenToUse.forEach(u => {
         const ruHl = u.example.highlight ? u.example.ru.replace(u.example.highlight, `<span class="hl">${u.example.highlight}</span>`) : u.example.ru;
         h += `<div class="use-case-item">
@@ -1610,7 +1686,7 @@ function renderGramCase() {
     h += `</div>`;
 
     // Noun endings table
-    h += `<div class="gram-section"><h3>От қўшимчалари (Окончания существительных)</h3>`;
+    h += `<div class="gram-section" id="gramNounEnd"><h3>От қўшимчалари (Окончания существительных)</h3>`;
     const genders = [
         { key: 'masculine', label: 'Мужской', badge: 'м', cls: 'g-m' },
         { key: 'feminine', label: 'Женский', badge: 'ж', cls: 'g-f' },
@@ -1618,7 +1694,6 @@ function renderGramCase() {
     ];
     genders.forEach(g => {
         const e = c.endings[g.key];
-        const examplesHtml = e.examples.map(ex => `${ex.sg} → ${ex.pl}`).join('<br>');
         h += `<div class="ending-row">
             <div class="ending-gender"><span class="badge ${g.cls}">${g.badge}</span>${g.label}</div>
             <div class="ending-cell">
@@ -1633,10 +1708,11 @@ function renderGramCase() {
             </div>
         </div>`;
     });
+    h += `</div>`;
 
     // Adjective endings
     if (c.adjEndings) {
-        h += `<div class="adj-ending-section"><h4>Сифат қўшимчалари (Окончания прилагательных)</h4>`;
+        h += `<div class="gram-section" id="gramAdjEnd"><h4 style="color:var(--accent-2);font-size:1.2em;margin-bottom:16px;text-align:center;font-weight:600">Сифат қўшимчалари (Окончания прилагательных)</h4>`;
         genders.forEach(g => {
             const a = c.adjEndings[g.key];
             h += `<div class="ending-row">
@@ -1655,10 +1731,9 @@ function renderGramCase() {
         });
         h += `</div>`;
     }
-    h += `</div>`;
 
     // Examples
-    h += `<div class="gram-section"><h3>Мисоллар</h3><div class="examples-grid">`;
+    h += `<div class="gram-section" id="gramExamples"><h3>Мисоллар</h3><div class="examples-grid">`;
     c.examples.forEach(ex => {
         const ruHl = ex.highlight ? ex.ru.replace(ex.highlight, `<span class="hl">${ex.highlight}</span>`) : ex.ru;
         h += `<div class="example-card"><div class="ru">${ruHl}</div><div class="uz">${ex.uz}</div></div>`;
@@ -1667,7 +1742,7 @@ function renderGramCase() {
 
     // Common mistakes
     if (c.commonMistakes && c.commonMistakes.length) {
-        h += `<div class="gram-section"><h3>Кўп учрайдиган хатолар</h3>`;
+        h += `<div class="gram-section" id="gramMistakes"><h3>Кўп учрайдиган хатолар</h3>`;
         c.commonMistakes.forEach(m => {
             h += `<div class="mistake-item">
                 <div class="mistake-wrong">${m.wrong}</div>
@@ -1679,10 +1754,9 @@ function renderGramCase() {
     }
 
     document.getElementById('gramContent').innerHTML = h;
-
-    // Update nav buttons
     document.getElementById('gramPrev').disabled = currentCaseIdx === 0;
     document.getElementById('gramNext').disabled = currentCaseIdx === GRAMMAR_CASES.length - 1;
+    setTimeout(setupGramObserver, 100);
 }
 
 function prevCase() { if (currentCaseIdx > 0) setGramCase(currentCaseIdx - 1); }
