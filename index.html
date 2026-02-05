@@ -14,14 +14,10 @@
         (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
 
         ym(106526217, "init", {
-            ssr:true,
-            webvisor:true,
             clickmap:true,
-            ecommerce:"dataLayer",
-            referrer: document.referrer,
-            url: location.href,
+            trackLinks:true,
             accurateTrackBounce:true,
-            trackLinks:true
+            webvisor:true
         });
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/106526217" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
@@ -592,6 +588,229 @@
         .conj-row .tense-cell .form { font-weight: 500; }
         .conj-row .tense-cell .form.na { color: var(--text-3); font-style: italic; }
 
+        /* Grammar Section */
+        .grammar-section { display: none; }
+        .grammar-section.active { display: block; }
+        .grammar-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .gram-tab {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text-2);
+            font-family: inherit;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .gram-tab:hover { border-color: var(--accent-1); color: var(--text-1); }
+        .gram-tab.active {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border-color: transparent;
+            color: #fff;
+        }
+        .gram-header {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 60px var(--glow);
+        }
+        .gram-header-top {
+            padding: 28px 24px;
+            text-align: center;
+            position: relative;
+        }
+        .gram-header-top::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .gram-case-name {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+        .gram-case-question {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+        }
+        .gram-case-uz {
+            margin-top: 8px;
+            opacity: 0.9;
+            font-size: 0.95em;
+            position: relative;
+            color: var(--success);
+        }
+        .gram-header-body { padding: 24px; }
+        .gram-explanation {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+        .gram-explanation h3 {
+            color: var(--accent-1);
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .gram-explanation p {
+            line-height: 1.7;
+            color: var(--text-2);
+            margin-bottom: 8px;
+        }
+        .gram-explanation .uz-text { color: var(--success); }
+        .gram-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .gram-section h3 {
+            color: var(--accent-1);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .use-case-item {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 14px;
+            transition: all 0.2s;
+        }
+        .use-case-item:hover { transform: translateX(4px); border-color: rgba(99,102,241,0.3); }
+        .use-case-title { font-weight: 600; margin-bottom: 6px; color: var(--text-1); }
+        .use-case-title-uz { color: var(--success); font-size: 0.9em; margin-bottom: 10px; }
+        .use-case-example {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-1);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+        }
+        .use-case-example .ru { font-weight: 500; margin-bottom: 4px; }
+        .use-case-example .uz { color: var(--text-3); font-size: 0.9em; }
+        .use-case-example .hl { color: var(--accent-1); font-weight: 700; background: rgba(99,102,241,0.15); padding: 1px 5px; border-radius: 4px; }
+        .ending-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr;
+            gap: 10px;
+            padding: 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        .ending-row:hover { transform: translateX(4px); border-color: rgba(99,102,241,0.3); }
+        .ending-gender {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--accent-1);
+            font-size: 0.9em;
+        }
+        .ending-cell {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+        .ending-cell .lbl { font-size: 0.75em; color: var(--text-3); text-transform: uppercase; margin-bottom: 6px; }
+        .ending-cell .val { font-weight: 600; font-size: 1em; color: var(--text-1); margin-bottom: 6px; }
+        .ending-cell .exs { font-size: 0.82em; color: var(--success); line-height: 1.5; }
+        .adj-ending-section { margin-top: 16px; }
+        .adj-ending-section h4 { color: var(--accent-2); font-size: 1em; margin-bottom: 12px; text-align: center; }
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+        }
+        .example-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+        .example-card:hover { transform: translateY(-2px); border-color: var(--accent-1); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+        .example-card .ru { font-weight: 500; margin-bottom: 8px; line-height: 1.5; }
+        .example-card .hl { color: var(--accent-1); font-weight: 700; background: rgba(99,102,241,0.15); padding: 1px 5px; border-radius: 4px; }
+        .example-card .uz { color: var(--success); font-size: 0.9em; }
+        .mistake-item {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+        .mistake-wrong {
+            padding: 10px 14px;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            color: var(--danger);
+        }
+        .mistake-correct {
+            padding: 10px 14px;
+            background: rgba(34,197,94,0.12);
+            border: 1px solid rgba(34,197,94,0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            color: var(--success);
+        }
+        .mistake-explain { font-size: 0.9em; color: var(--text-2); line-height: 1.6; }
+        .mistake-explain .uz-text { color: var(--success); display: block; margin-top: 4px; }
+        .gram-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        .gram-nav-btn {
+            padding: 12px 24px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text-2);
+            font-family: inherit;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .gram-nav-btn:hover { border-color: var(--accent-1); color: var(--text-1); background: var(--bg-elevated); }
+        .gram-nav-btn:disabled { opacity: 0.3; cursor: default; }
+        @media (max-width: 700px) {
+            .ending-row { grid-template-columns: 1fr; text-align: center; }
+            .ending-gender { justify-content: center; }
+            .gram-case-name { font-size: 1.5em; }
+            .grammar-tabs { gap: 4px; }
+            .gram-tab { padding: 8px 12px; font-size: 0.8em; }
+            .examples-grid { grid-template-columns: 1fr; }
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
@@ -617,6 +836,7 @@
     <button class="nav-btn" onclick="mode('sentences')">📝 Гаплар</button>
     <button class="nav-btn" onclick="mode('list')">📋 Рўйхат</button>
     <button class="nav-btn" onclick="mode('verbs')">🔤 Феълар</button>
+    <button class="nav-btn" onclick="mode('grammar')">📗 Грамматика</button>
     <button class="nav-btn" onclick="markDone()">✅ Ўргандим</button>
     <button class="nav-btn" onclick="shuffle()">🔀 Аралаш</button>
 </div>
@@ -719,11 +939,20 @@
             </div>
         </div>
     </div>
+    <div class="grammar-section" id="grammar">
+        <div class="grammar-tabs" id="gramTabs"></div>
+        <div id="gramContent"></div>
+        <div class="gram-nav">
+            <button class="gram-nav-btn" id="gramPrev" onclick="prevCase()">← Олдинги</button>
+            <button class="gram-nav-btn" id="gramNext" onclick="nextCase()">Кейинги →</button>
+        </div>
+    </div>
 </div>
 <script src="data_150.js?v=3"></script>
 <script src="sentences.js?v=3"></script>
 <script src="verbs.js?v=1"></script>
 <script src="verb_sentences.js?v=1"></script>
+<script src="grammatika.js?v=1"></script>
 <script>
 const CASES=[{ru:"Именительный",q:"кто? что?"},{ru:"Родительный",q:"кого? чего?"},{ru:"Дательный",q:"кому? чему?"},{ru:"Винительный",q:"кого? что?"},{ru:"Творительный",q:"кем? чем?"},{ru:"Предложный",q:"о ком? о чём?"}];
 const UZ_SUFFIX=["","нинг","га","ни"," билан"," ҳақида"];
@@ -752,14 +981,15 @@ function markDone(){learned.add(wordOrder[wordIdx]);updateStats();if(wordIdx<DAT
 function shuffle(){for(let i=wordOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[wordOrder[i],wordOrder[j]]=[wordOrder[j],wordOrder[i]]}wordIdx=0;adjIdx=0;render()}
 function updateStats(){document.getElementById("done").textContent=learned.size;document.getElementById("score").textContent=score;document.getElementById("tries").textContent=tries;document.getElementById("total").textContent=DATA.length;document.getElementById("prog").style.width=(learned.size/DATA.length*100)+"%"}
 function mode(m){
-    const modeIdx = {learn:0, quiz:1, sentences:2, list:3, verbs:4};
+    const modeIdx = {learn:0, quiz:1, sentences:2, list:3, verbs:4, grammar:5};
     document.querySelectorAll(".nav-btn").forEach((b,i)=>b.classList.toggle("active",i===modeIdx[m]));
     document.getElementById("learn").style.display=m==="learn"?"block":"none";
     document.getElementById("quiz").classList.toggle("active",m==="quiz");
     document.getElementById("sentences").classList.toggle("active",m==="sentences");
     document.getElementById("list").classList.toggle("active",m==="list");
     document.getElementById("verbs").classList.toggle("active",m==="verbs");
-    if(m==="quiz")genQ();if(m==="sentences")genSentence();if(m==="list")renderList();if(m==="verbs")renderVerb();
+    document.getElementById("grammar").classList.toggle("active",m==="grammar");
+    if(m==="quiz")genQ();if(m==="sentences")genSentence();if(m==="list")renderList();if(m==="verbs")renderVerb();if(m==="grammar")renderGrammar();
 }
 function setQuizType(t){
     quizType=t;
@@ -816,19 +1046,19 @@ function checkOpt(btn,sel,corr){
     tries++;const res=document.getElementById("qRes");
     if(sel===corr){score++;btn.classList.add("correct");res.className="result ok";res.innerHTML="✅ Тўғри!"}
     else{btn.classList.add("wrong");res.className="result no";res.innerHTML=`❌<div class="answer">${corr}</div>`}
-    res.style.display="block";updateStats();setTimeout(genQ,1500)
+    res.style.display="block";updateStats();setTimeout(genQ,3000)
 }
 function checkWrite(){
     const user=document.getElementById("qInput").value.trim().toLowerCase(),corr=currentAnswer.toLowerCase();
     tries++;const res=document.getElementById("qRes");
     if(user===corr){score++;res.className="result ok";res.innerHTML="✅ Тўғри!"}
     else{res.className="result no";res.innerHTML=`❌<div class="answer">${currentAnswer}</div>`}
-    res.style.display="block";updateStats();setTimeout(genQ,1800)
+    res.style.display="block";updateStats();setTimeout(genQ,3000)
 }
 function skipQ(){
     const res=document.getElementById("qRes");
     res.className="result no";res.innerHTML=`<div class="answer">${currentAnswer}</div>`;
-    res.style.display="block";tries++;updateStats();setTimeout(genQ,1200)
+    res.style.display="block";tries++;updateStats();setTimeout(genQ,3000)
 }
 function renderList(){
     let h=`<div class="search-wrap"><input type="text" class="search-input" id="searchInput" placeholder="🔍 Қидириш..." oninput="filterList()"></div>`;
@@ -948,7 +1178,7 @@ function checkSentence(btn, sel, corr){
     document.getElementById("sentScore").textContent = sentScore;
     document.getElementById("sentTries").textContent = sentTries;
 
-    setTimeout(genSentence, 1800);
+    setTimeout(genSentence, 3000);
 }
 
 // ===== VERBS SECTION =====
@@ -1176,7 +1406,7 @@ function checkVerbWrite() {
     res.style.display = 'block';
     document.getElementById('verbScore').textContent = verbScore;
     document.getElementById('verbTries').textContent = verbTries;
-    setTimeout(genVerbQ, 1800);
+    setTimeout(genVerbQ, 3000);
 }
 
 function skipVerbQ() {
@@ -1187,7 +1417,7 @@ function skipVerbQ() {
     verbTries++;
     document.getElementById('verbScore').textContent = verbScore;
     document.getElementById('verbTries').textContent = verbTries;
-    setTimeout(genVerbQ, 1200);
+    setTimeout(genVerbQ, 3000);
 }
 
 function checkVerbOpt(btn, sel, corr) {
@@ -1211,7 +1441,7 @@ function checkVerbOpt(btn, sel, corr) {
     res.style.display = 'block';
     document.getElementById('verbScore').textContent = verbScore;
     document.getElementById('verbTries').textContent = verbTries;
-    setTimeout(genVerbQ, 1500);
+    setTimeout(genVerbQ, 3000);
 }
 
 // ===== VERB SENTENCES =====
@@ -1308,7 +1538,7 @@ function checkVerbSentence(btn, sel, corr) {
     document.getElementById('vSentScore').textContent = vSentScore;
     document.getElementById('vSentTries').textContent = vSentTries;
 
-    setTimeout(genVerbSentence, 1800);
+    setTimeout(genVerbSentence, 3000);
 }
 
 // Keyboard for verbs
@@ -1322,6 +1552,141 @@ document.addEventListener('keydown', e => {
     }
     if (verbsOn && verbMode === 'quiz' && verbQuizType === 'conj' && e.key === 'Enter') checkVerbWrite();
 });
+
+// ========== GRAMMAR SECTION ==========
+let currentCaseIdx = 0;
+
+function renderGrammar() {
+    // Build tabs
+    let tabs = '';
+    GRAMMAR_CASES.forEach((c, i) => {
+        tabs += `<button class="gram-tab${i === currentCaseIdx ? ' active' : ''}" onclick="setGramCase(${i})">${c.id}. ${c.name.slice(0, 3)}.</button>`;
+    });
+    document.getElementById('gramTabs').innerHTML = tabs;
+    renderGramCase();
+}
+
+function setGramCase(idx) {
+    if (idx < 0 || idx >= GRAMMAR_CASES.length) return;
+    currentCaseIdx = idx;
+    document.querySelectorAll('.gram-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+    renderGramCase();
+    window.scrollTo({ top: document.getElementById('grammar').offsetTop - 60, behavior: 'smooth' });
+}
+
+function renderGramCase() {
+    const c = GRAMMAR_CASES[currentCaseIdx];
+    let h = '';
+
+    // Header
+    h += `<div class="gram-header">
+        <div class="gram-header-top" style="background:linear-gradient(135deg,${c.color},${c.color}cc)">
+            <div class="gram-case-name">${c.id}. ${c.name} падеж</div>
+            <div class="gram-case-question">${c.question}</div>
+            <div class="gram-case-uz">${c.nameUz} — ${c.questionUz}</div>
+        </div>
+        <div class="gram-header-body">
+            <div class="gram-explanation">
+                <h3>Нима учун ишлатилади?</h3>
+                <p>${c.explanation.ru}</p>
+                <p class="uz-text">${c.explanation.uz}</p>
+            </div>
+        </div>
+    </div>`;
+
+    // When to use
+    h += `<div class="gram-section"><h3>Қачон ишлатамиз?</h3>`;
+    c.whenToUse.forEach(u => {
+        const ruHl = u.example.highlight ? u.example.ru.replace(u.example.highlight, `<span class="hl">${u.example.highlight}</span>`) : u.example.ru;
+        h += `<div class="use-case-item">
+            <div class="use-case-title">${u.ru}</div>
+            <div class="use-case-title-uz">${u.uz}</div>
+            <div class="use-case-example">
+                <div class="ru">${ruHl}</div>
+                <div class="uz">${u.example.uz}</div>
+            </div>
+        </div>`;
+    });
+    h += `</div>`;
+
+    // Noun endings table
+    h += `<div class="gram-section"><h3>От қўшимчалари (Окончания существительных)</h3>`;
+    const genders = [
+        { key: 'masculine', label: 'Мужской', badge: 'м', cls: 'g-m' },
+        { key: 'feminine', label: 'Женский', badge: 'ж', cls: 'g-f' },
+        { key: 'neuter', label: 'Средний', badge: 'ср', cls: 'g-n' }
+    ];
+    genders.forEach(g => {
+        const e = c.endings[g.key];
+        const examplesHtml = e.examples.map(ex => `${ex.sg} → ${ex.pl}`).join('<br>');
+        h += `<div class="ending-row">
+            <div class="ending-gender"><span class="badge ${g.cls}">${g.badge}</span>${g.label}</div>
+            <div class="ending-cell">
+                <div class="lbl">Бирлик (ед.ч.)</div>
+                <div class="val">${e.singular || '—'}</div>
+                <div class="exs">${e.examples.map(ex => ex.sg).join(', ')}</div>
+            </div>
+            <div class="ending-cell">
+                <div class="lbl">Кўплик (мн.ч.)</div>
+                <div class="val">${e.plural || '—'}</div>
+                <div class="exs">${e.examples.map(ex => ex.pl).join(', ')}</div>
+            </div>
+        </div>`;
+    });
+
+    // Adjective endings
+    if (c.adjEndings) {
+        h += `<div class="adj-ending-section"><h4>Сифат қўшимчалари (Окончания прилагательных)</h4>`;
+        genders.forEach(g => {
+            const a = c.adjEndings[g.key];
+            h += `<div class="ending-row">
+                <div class="ending-gender"><span class="badge ${g.cls}">${g.badge}</span>${g.label}</div>
+                <div class="ending-cell">
+                    <div class="lbl">Бирлик (ед.ч.)</div>
+                    <div class="val">${a.sg}</div>
+                    <div class="exs">${a.example.sg}</div>
+                </div>
+                <div class="ending-cell">
+                    <div class="lbl">Кўплик (мн.ч.)</div>
+                    <div class="val">${a.pl}</div>
+                    <div class="exs">${a.example.pl}</div>
+                </div>
+            </div>`;
+        });
+        h += `</div>`;
+    }
+    h += `</div>`;
+
+    // Examples
+    h += `<div class="gram-section"><h3>Мисоллар</h3><div class="examples-grid">`;
+    c.examples.forEach(ex => {
+        const ruHl = ex.highlight ? ex.ru.replace(ex.highlight, `<span class="hl">${ex.highlight}</span>`) : ex.ru;
+        h += `<div class="example-card"><div class="ru">${ruHl}</div><div class="uz">${ex.uz}</div></div>`;
+    });
+    h += `</div></div>`;
+
+    // Common mistakes
+    if (c.commonMistakes && c.commonMistakes.length) {
+        h += `<div class="gram-section"><h3>Кўп учрайдиган хатолар</h3>`;
+        c.commonMistakes.forEach(m => {
+            h += `<div class="mistake-item">
+                <div class="mistake-wrong">${m.wrong}</div>
+                <div class="mistake-correct">${m.correct}</div>
+                <div class="mistake-explain">${m.explanation.ru}<span class="uz-text">${m.explanation.uz}</span></div>
+            </div>`;
+        });
+        h += `</div>`;
+    }
+
+    document.getElementById('gramContent').innerHTML = h;
+
+    // Update nav buttons
+    document.getElementById('gramPrev').disabled = currentCaseIdx === 0;
+    document.getElementById('gramNext').disabled = currentCaseIdx === GRAMMAR_CASES.length - 1;
+}
+
+function prevCase() { if (currentCaseIdx > 0) setGramCase(currentCaseIdx - 1); }
+function nextCase() { if (currentCaseIdx < GRAMMAR_CASES.length - 1) setGramCase(currentCaseIdx + 1); }
 
 render();updateStats()
 </script>
