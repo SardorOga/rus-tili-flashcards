@@ -655,6 +655,35 @@
             margin-top: 16px; border-left: 4px solid #fbc02d; color: var(--text-2); line-height: 1.7;
         }
         .gram-examples-box strong { color: #fbc02d; }
+        .gram-description {
+            padding: 16px 24px 20px; color: var(--text-2); font-size: 0.95em; line-height: 1.7;
+        }
+        .gram-usage-item {
+            background: #262640; padding: 14px 16px; border-radius: 12px; margin-bottom: 10px;
+        }
+        .gram-usage-title {
+            color: var(--text-1); font-weight: 600; font-size: 0.95em; margin-bottom: 2px;
+        }
+        .gram-usage-title-uz {
+            color: var(--text-3); font-size: 0.85em; margin-bottom: 8px;
+        }
+        .gram-usage-example {
+            background: #1a1a2e; padding: 10px 14px; border-radius: 8px; font-size: 0.9em;
+            color: var(--text-2); border-left: 3px solid var(--accent-1);
+        }
+        .gram-verbs-box {
+            display: flex; flex-wrap: wrap; gap: 8px;
+        }
+        .gram-verb-tag {
+            background: rgba(99,102,241,0.12); color: var(--accent-1); padding: 8px 14px;
+            border-radius: 10px; font-size: 0.88em; font-weight: 500;
+            border: 1px solid rgba(99,102,241,0.2);
+        }
+        .gram-tip-item {
+            background: rgba(34,197,94,0.08); padding: 12px 16px; border-radius: 10px;
+            margin-bottom: 8px; color: var(--text-2); font-size: 0.9em; line-height: 1.6;
+            border-left: 3px solid var(--success);
+        }
         .gram-nav {
             display: flex; justify-content: center; gap: 12px; margin-top: 24px;
             padding-top: 20px; border-top: 1px solid var(--border);
@@ -1430,18 +1459,19 @@ let gramObserver = null;
 
 function getGramSections() {
     const c = GRAMMAR_CASES[currentCaseIdx];
-    if (c.animateRows) {
-        return [
-            { id: 'gramInfo', label: 'Маълумот' },
-            { id: 'gramAnimate', label: 'Жонли' },
-            { id: 'gramInanimate', label: 'Жонсиз' }
-        ];
-    }
     const s = [
         { id: 'gramInfo', label: 'Маълумот' },
-        { id: 'gramTable', label: 'Жадвал' }
+        { id: 'gramUsages', label: 'Қачон?' }
     ];
-    if (c.sentenceExamples) s.push({ id: 'gramExamples', label: 'Мисоллар' });
+    if (c.animateRows) {
+        s.push({ id: 'gramAnimate', label: 'Жонли' });
+        s.push({ id: 'gramInanimate', label: 'Жонсиз' });
+    } else {
+        s.push({ id: 'gramTable', label: 'Жадвал' });
+    }
+    s.push({ id: 'gramVerbs', label: 'Феъллар' });
+    s.push({ id: 'gramTips', label: 'Маслаҳат' });
+    if (c.sentenceExamples || c.animateExamples) s.push({ id: 'gramExamples', label: 'Мисоллар' });
     return s;
 }
 
@@ -1541,26 +1571,34 @@ function renderGramCase() {
             <strong>Савол:</strong> ${c.question} (${c.questionUz})<br>
             <strong>Предлоглар:</strong> ${c.prepositions}
         </div>
+        ${c.description ? `<div class="gram-description">${c.description}</div>` : ''}
     </div>`;
+
+    // Usages section
+    if (c.usages && c.usages.length) {
+        h += `<div class="gram-section" id="gramUsages"><h3>Қачон ишлатамиз?</h3>`;
+        c.usages.forEach(u => {
+            h += `<div class="gram-usage-item">
+                <div class="gram-usage-title">${u.title}</div>
+                <div class="gram-usage-title-uz">${u.titleUz}</div>
+                <div class="gram-usage-example">${formatSentenceExamples(u.example)}</div>
+            </div>`;
+        });
+        h += `</div>`;
+    }
 
     if (c.animateRows) {
         // Case 4: Animate table
         h += `<div class="gram-section" id="gramAnimate">
             <h3>Жонли (Одушевлённые)</h3>
-            ${buildGramTable(c.animateRows, c.color)}`;
-        if (c.animateExamples) {
-            h += `<div class="gram-examples-box"><strong>Мисоллар:</strong><br>${formatSentenceExamples(c.animateExamples)}</div>`;
-        }
-        h += `</div>`;
+            ${buildGramTable(c.animateRows, c.color)}
+        </div>`;
 
         // Case 4: Inanimate table
         h += `<div class="gram-section" id="gramInanimate">
             <h3>Жонсиз (Неодушевлённые)</h3>
-            ${buildGramTable(c.inanimateRows, c.color)}`;
-        if (c.inanimateExamples) {
-            h += `<div class="gram-examples-box"><strong>Мисоллар:</strong><br>${formatSentenceExamples(c.inanimateExamples)}</div>`;
-        }
-        h += `</div>`;
+            ${buildGramTable(c.inanimateRows, c.color)}
+        </div>`;
     } else {
         // Regular table
         h += `<div class="gram-section" id="gramTable">
@@ -1569,13 +1607,42 @@ function renderGramCase() {
         </div>`;
     }
 
-    // Sentence examples
-    const examples = c.sentenceExamples || '';
-    if (examples) {
-        h += `<div class="gram-section" id="gramExamples">
-            <h3>Гаплар билан мисоллар</h3>
-            <div class="gram-examples-box">${formatSentenceExamples(examples)}</div>
+    // Key verbs
+    if (c.keyVerbs) {
+        h += `<div class="gram-section" id="gramVerbs">
+            <h3>Муҳим феъллар</h3>
+            <div class="gram-verbs-box">${c.keyVerbs.split(', ').map(v => `<span class="gram-verb-tag">${v}</span>`).join('')}</div>
         </div>`;
+    }
+
+    // Tips
+    if (c.tips && c.tips.length) {
+        h += `<div class="gram-section" id="gramTips">
+            <h3>Фойдали маслаҳатлар</h3>`;
+        c.tips.forEach(tip => {
+            h += `<div class="gram-tip-item">${tip}</div>`;
+        });
+        h += `</div>`;
+    }
+
+    // Sentence examples
+    if (c.animateRows) {
+        h += `<div class="gram-section" id="gramExamples"><h3>Гаплар билан мисоллар</h3>`;
+        if (c.animateExamples) {
+            h += `<div class="gram-examples-box"><strong>Жонли мисоллар:</strong><br>${formatSentenceExamples(c.animateExamples)}</div>`;
+        }
+        if (c.inanimateExamples) {
+            h += `<div class="gram-examples-box" style="margin-top:12px"><strong>Жонсиз мисоллар:</strong><br>${formatSentenceExamples(c.inanimateExamples)}</div>`;
+        }
+        h += `</div>`;
+    } else {
+        const examples = c.sentenceExamples || '';
+        if (examples) {
+            h += `<div class="gram-section" id="gramExamples">
+                <h3>Гаплар билан мисоллар</h3>
+                <div class="gram-examples-box">${formatSentenceExamples(examples)}</div>
+            </div>`;
+        }
     }
 
     document.getElementById('gramContent').innerHTML = h;
