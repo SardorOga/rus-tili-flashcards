@@ -12,11 +12,11 @@ class SentenceSeeder extends Seeder
     /**
      * Seed sentences from sentences.json using bulk insert.
      *
-     * JSON format: array of {wI, aI, cI, pl, sentence, answer}
-     * - wI = word index (0-based) -> word_id = wI + 1
-     * - aI = adjective index
-     * - cI = case index (0-based) -> case_id = cI + 1
-     * - pl = 0 or 1 -> is_plural
+     * JSON format: array of {id, word_index, adjective_index, case_index, is_plural, sentence, answer}
+     * - word_index = 0-based -> word_id = word_index + 1
+     * - adjective_index = adjective index
+     * - case_index = 0-based -> case_id = case_index + 1
+     * - is_plural = boolean
      */
     public function run(): void
     {
@@ -29,7 +29,7 @@ class SentenceSeeder extends Seeder
             return;
         }
 
-        /** @var array<int, array{wI: int, aI: int, cI: int, pl: int, sentence: string, answer: string}> $sentences */
+        /** @var array<int, array{id: int, word_index: int, adjective_index: int, case_index: int, is_plural: bool, sentence: string, answer: string}> $sentences */
         $sentences = json_decode((string) file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
 
         $now = now();
@@ -37,10 +37,10 @@ class SentenceSeeder extends Seeder
 
         foreach ($sentences as $sentence) {
             $records[] = [
-                'word_id' => $sentence['wI'] + 1,
-                'adjective_index' => $sentence['aI'],
-                'case_id' => $sentence['cI'] + 1,
-                'is_plural' => (bool) $sentence['pl'],
+                'word_id' => $sentence['word_index'] + 1,
+                'adjective_index' => $sentence['adjective_index'],
+                'case_id' => $sentence['case_index'] + 1,
+                'is_plural' => (bool) $sentence['is_plural'],
                 'sentence_template' => $sentence['sentence'],
                 'correct_answer' => $sentence['answer'],
                 'created_at' => $now,

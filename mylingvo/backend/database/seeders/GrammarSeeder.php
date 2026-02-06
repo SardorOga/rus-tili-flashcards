@@ -15,8 +15,9 @@ class GrammarSeeder extends Seeder
     /**
      * Seed grammar case details, rows, and sentence examples from grammar.json.
      *
-     * JSON format: array of 6 case objects with name, nameRu, color, prepositions,
-     * rows/animateRows/inanimateRows, sentenceExamples, description, usages, keyVerbs, tips.
+     * JSON format: array of 6 case objects with name, nameUz, color, prepositions (string),
+     * rows/animateRows/inanimateRows, sentenceExamples (comma-separated string of "ru - uz" pairs),
+     * description, usages, keyVerbs, tips.
      */
     public function run(): void
     {
@@ -40,12 +41,18 @@ class GrammarSeeder extends Seeder
             foreach ($grammarCases as $index => $caseData) {
                 $caseId = $index + 1;
 
+                // Prepositions in JSON is a plain string — split by ", " into an array for the json column
+                $prepositions = null;
+                if (isset($caseData['prepositions']) && is_string($caseData['prepositions'])) {
+                    $prepositions = array_map('trim', explode(',', $caseData['prepositions']));
+                }
+
                 // Create GrammarCaseDetail
                 $detail = GrammarCaseDetail::create([
                     'case_id' => $caseId,
                     'description' => $caseData['description'] ?? null,
                     'color' => $caseData['color'] ?? '#2c5f2d',
-                    'prepositions' => $caseData['prepositions'] ?? null,
+                    'prepositions' => $prepositions,
                 ]);
                 $detailCount++;
 
@@ -102,19 +109,41 @@ class GrammarSeeder extends Seeder
                     }
                 }
 
-                // Process sentence examples
-                if (isset($caseData['sentenceExamples']) && is_array($caseData['sentenceExamples'])) {
-                    foreach ($caseData['sentenceExamples'] as $example) {
-                        GrammarSentenceExample::create([
-                            'grammar_case_id' => $detail->id,
-                            'sentence_ru' => $example['ru'],
-                            'sentence_uz' => $example['uz'],
-                        ]);
-                        $exampleCount++;
+                // Process sentence examples — JSON has a comma-separated string of "ru - uz" pairs
+                if (isset($caseData['sentenceExamples']) && is_string($caseData['sentenceExamples'])) {
+                    // Split by "., " to get individual "ru - uz" pairs (each pair ends with ".")
+                    $pairs = array_filter(
+                        array_map('trim', explode('.,', $caseData['sentenceExamples'])),
+                        fn (string $s): bool => $s !== '',
+                    );
+
+                    foreach ($pairs as $pair) {
+                        // Each pair is "Russian sentence. - Uzbek sentence" or "Russian sentence - Uzbek sentence"
+                        // Find the " - " separator between Russian and Uzbek parts
+                        $separatorPos = mb_strpos($pair, ' - ');
+                        if ($separatorPos !== false) {
+                            $ru = trim(mb_substr($pair, 0, $separatorPos));
+                            $uz = trim(mb_substr($pair, $separatorPos + 3));
+
+                            // Re-add trailing period if it was stripped by the split
+                            if (! str_ends_with($ru, '.')) {
+                                $ru .= '.';
+                            }
+                            if (! str_ends_with($uz, '.')) {
+                                $uz .= '.';
+                            }
+
+                            GrammarSentenceExample::create([
+                                'grammar_case_id' => $detail->id,
+                                'sentence_ru' => $ru,
+                                'sentence_uz' => $uz,
+                            ]);
+                            $exampleCount++;
+                        }
                     }
                 }
 
-                $caseName = $caseData['nameRu'] ?? "Case {$caseId}";
+                $caseName = $caseData['name'] ?? "Case {$caseId}";
                 $this->command->info("  Seeded grammar for {$caseName}.");
             }
         });

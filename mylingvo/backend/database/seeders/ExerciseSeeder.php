@@ -14,7 +14,7 @@ class ExerciseSeeder extends Seeder
     /**
      * Seed exercise words and sentences from exercises.json.
      *
-     * JSON format: {padejNames: [...], mashqWords: [...], padejSentences: [...]}
+     * JSON format: {case_names: [...], words: [...], sentences: [...]}
      */
     public function run(): void
     {
@@ -27,16 +27,16 @@ class ExerciseSeeder extends Seeder
             return;
         }
 
-        /** @var array{padejNames: array, mashqWords: array, padejSentences: array} $data */
+        /** @var array{case_names: array, words: array, sentences: array} $data */
         $data = json_decode((string) file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
 
         $wordCount = 0;
         $sentenceCount = 0;
 
         DB::transaction(function () use ($data, &$wordCount, &$sentenceCount): void {
-            // Seed exercise words from mashqWords
-            if (isset($data['mashqWords']) && is_array($data['mashqWords'])) {
-                foreach ($data['mashqWords'] as $wordData) {
+            // Seed exercise words from words
+            if (isset($data['words']) && is_array($data['words'])) {
+                foreach ($data['words'] as $wordData) {
                     ExerciseWord::create([
                         'word' => $wordData['word'],
                         'word_uz' => $wordData['wordUz'],
@@ -51,9 +51,9 @@ class ExerciseSeeder extends Seeder
                 $this->command->info("  Seeded {$wordCount} exercise words.");
             }
 
-            // Seed exercise sentences from padejSentences
-            if (isset($data['padejSentences']) && is_array($data['padejSentences'])) {
-                foreach ($data['padejSentences'] as $sentenceData) {
+            // Seed exercise sentences from sentences
+            if (isset($data['sentences']) && is_array($data['sentences'])) {
+                foreach ($data['sentences'] as $sentenceData) {
                     ExerciseSentence::create([
                         'sentence_template' => $sentenceData['sentence'],
                         'target_word' => $sentenceData['word'],

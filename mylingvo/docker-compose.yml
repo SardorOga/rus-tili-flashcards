@@ -8,6 +8,7 @@ services:
     working_dir: /var/www
     volumes:
       - ./backend:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - mylingvo
     depends_on:
@@ -42,7 +43,7 @@ services:
     container_name: mylingvo-postgres
     restart: unless-stopped
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "${DB_PORT:-5433}:5432"
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
@@ -57,7 +58,7 @@ services:
     container_name: mylingvo-redis
     restart: unless-stopped
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "${REDIS_PORT:-6380}:6379"
     networks:
       - mylingvo
 

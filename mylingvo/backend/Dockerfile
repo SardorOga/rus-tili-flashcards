@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -17,9 +17,6 @@ RUN apt-get update && apt-get install -y \
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Copy PHP config
-COPY ../docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
 
 # Set working directory
 WORKDIR /var/www

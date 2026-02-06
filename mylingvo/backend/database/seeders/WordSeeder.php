@@ -35,39 +35,36 @@ class WordSeeder extends Seeder
         $adjectiveCount = 0;
         $formCount = 0;
 
-        DB::transaction(function () use ($words, &$wordCount, &$adjectiveCount, &$formCount): void {
-            foreach ($words as $wordData) {
-                [$noun, $gender, $uzNoun, $uzNounPlural, $adjectives] = $wordData;
+        $caseKeys = ['nominative', 'genitive', 'dative', 'accusative', 'instrumental', 'prepositional'];
 
+        DB::transaction(function () use ($words, $caseKeys, &$wordCount, &$adjectiveCount, &$formCount): void {
+            foreach ($words as $wordData) {
                 $word = Word::create([
-                    'noun' => $noun,
-                    'gender' => $gender,
-                    'uz_noun' => $uzNoun,
-                    'uz_noun_plural' => $uzNounPlural,
+                    'noun' => $wordData['noun'],
+                    'gender' => $wordData['gender'],
+                    'uz_noun' => $wordData['uz_noun'],
+                    'uz_noun_plural' => $wordData['uz_noun_plural'] ?? null,
                 ]);
                 $wordCount++;
 
-                foreach ($adjectives as $adjData) {
-                    [$adjective, $uzAdjective, $forms] = $adjData;
-                    [$sgForms, $plForms] = $forms;
-
+                foreach ($wordData['adjectives'] as $adjData) {
                     $wordAdj = WordAdjective::create([
                         'word_id' => $word->id,
-                        'adjective' => $adjective,
-                        'uz_adjective' => $uzAdjective,
+                        'adjective' => $adjData['adjective'],
+                        'uz_adjective' => $adjData['uz_adjective'],
                     ]);
                     $adjectiveCount++;
 
                     $formRecords = [];
                     $now = now();
 
-                    // Process 6 cases (index 0-5), case_id = index + 1
                     for ($caseIdx = 0; $caseIdx < 6; $caseIdx++) {
                         $caseId = $caseIdx + 1;
+                        $key = $caseKeys[$caseIdx];
 
                         // Singular form
-                        if (isset($sgForms[$caseIdx])) {
-                            [$adjForm, $nounForm] = $this->splitForm($sgForms[$caseIdx]);
+                        if (isset($adjData['singular'][$key])) {
+                            [$adjForm, $nounForm] = $this->splitForm($adjData['singular'][$key]);
                             $formRecords[] = [
                                 'word_adjective_id' => $wordAdj->id,
                                 'case_id' => $caseId,
@@ -80,8 +77,8 @@ class WordSeeder extends Seeder
                         }
 
                         // Plural form
-                        if (isset($plForms[$caseIdx])) {
-                            [$adjForm, $nounForm] = $this->splitForm($plForms[$caseIdx]);
+                        if (isset($adjData['plural'][$key])) {
+                            [$adjForm, $nounForm] = $this->splitForm($adjData['plural'][$key]);
                             $formRecords[] = [
                                 'word_adjective_id' => $wordAdj->id,
                                 'case_id' => $caseId,
@@ -94,7 +91,6 @@ class WordSeeder extends Seeder
                         }
                     }
 
-                    // Bulk insert forms for this adjective
                     foreach (array_chunk($formRecords, 500) as $chunk) {
                         DB::table('word_forms')->insert($chunk);
                     }

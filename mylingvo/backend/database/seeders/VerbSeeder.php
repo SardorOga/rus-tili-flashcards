@@ -13,7 +13,8 @@ class VerbSeeder extends Seeder
     /**
      * Seed verbs and their conjugations from verbs.json.
      *
-     * JSON format: array of {nsv, sv, uz, group, nsv_conj: {present: [...], past: [...], future: [...]}, sv_conj: {past: [...], future: [...]}}
+     * JSON format: array of {id, nsv, sv, uz, group, nsv_conj: {present: [...], past: [...], future: [...]}, sv_conj: {past: [...], future: [...]}}
+     * Note: group is a string like "1-guruh" — we extract the integer prefix for the tinyInteger column.
      */
     public function run(): void
     {
@@ -34,11 +35,14 @@ class VerbSeeder extends Seeder
 
         DB::transaction(function () use ($verbs, &$verbCount, &$conjugationCount): void {
             foreach ($verbs as $verbData) {
+                // Extract numeric group from string like "1-guruh" -> 1
+                $group = (int) $verbData['group'];
+
                 $verb = Verb::create([
                     'nsv' => $verbData['nsv'],
                     'sv' => $verbData['sv'],
                     'uz' => $verbData['uz'],
-                    'group' => $verbData['group'],
+                    'group' => $group,
                 ]);
                 $verbCount++;
 

@@ -12,8 +12,8 @@ class VerbSentenceSeeder extends Seeder
     /**
      * Seed verb sentences from verb_sentences.json using bulk insert.
      *
-     * JSON format: array of {vI, asp, tense, pIdx, sentence, answer}
-     * - vI = verb index (0-based) -> verb_id = vI + 1
+     * JSON format: array of {id, verb_index, aspect, tense, person_index, sentence, answer}
+     * - verb_index = 0-based -> verb_id = verb_index + 1
      */
     public function run(): void
     {
@@ -26,7 +26,7 @@ class VerbSentenceSeeder extends Seeder
             return;
         }
 
-        /** @var array<int, array{vI: int, asp: string, tense: string, pIdx: int, sentence: string, answer: string}> $verbSentences */
+        /** @var array<int, array{id: int, verb_index: int, aspect: string, tense: string, person_index: int, sentence: string, answer: string}> $verbSentences */
         $verbSentences = json_decode((string) file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
 
         $now = now();
@@ -34,10 +34,10 @@ class VerbSentenceSeeder extends Seeder
 
         foreach ($verbSentences as $item) {
             $records[] = [
-                'verb_id' => $item['vI'] + 1,
-                'aspect' => $item['asp'],
+                'verb_id' => $item['verb_index'] + 1,
+                'aspect' => $item['aspect'],
                 'tense' => $item['tense'],
-                'person_index' => $item['pIdx'],
+                'person_index' => $item['person_index'],
                 'sentence_template' => $item['sentence'],
                 'correct_answer' => $item['answer'],
                 'created_at' => $now,
